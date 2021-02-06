@@ -154,9 +154,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DSA_Assignment.cpp" />
+    <ClCompile Include="DirectoryTree.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Vector.h" />
+    <ClInclude Include="DirectoryTree.h" />
+    <ClInclude Include="vector\Vector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

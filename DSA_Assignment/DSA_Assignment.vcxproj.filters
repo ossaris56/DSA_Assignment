@@ -18,9 +18,15 @@
     <ClCompile Include="DSA_Assignment.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DirectoryTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Vector.h">
+    <ClInclude Include="DirectoryTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vector\Vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

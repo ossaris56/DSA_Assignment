@@ -24,14 +24,6 @@ int main()
 
     if (option == 1)
     {
-      int stopMusic = 0;
-      PlaySound(TEXT("../assets/piano.wav"), NULL, SND_FILENAME | SND_ASYNC);
-      std::cout << "Press 1 to stop : ";
-      std::cin >> stopMusic;
-      if (stopMusic == 1)
-      {
-        PlaySound(NULL, 0, 0);
-      }
     }
   }
 }

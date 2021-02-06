@@ -67,6 +67,11 @@ class Vector
     return size;
   }
 
+  T& Back()
+  {
+    return arr[size - 1];
+  }
+
   void Print()
   {
     for (size_t i = 0; i < size; i++)
