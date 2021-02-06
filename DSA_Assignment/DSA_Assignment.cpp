@@ -59,7 +59,8 @@ void MainMenu()
 void SongLibraryMenu(Vector<TreeNode*> directory)
 {
   int option = -1;
-  std::cout << "\nSong Library" << std::endl;
+  std::cout << std::endl;
+  std::cout << "Song Library" << std::endl;
   std::cout << "==========================" << std::endl;
   std::cout << "[0] Main Menu" << std::endl;
   // for every file in the /music folder
@@ -81,13 +82,13 @@ void SongLibraryMenu(Vector<TreeNode*> directory)
     std::cout << "Invalid input, please try again";
     SongLibraryMenu(directory);
   }
-  if (directory[option]->isDirectory)
+  if (directory[option - 1]->isDirectory)
   {
-    SongLibraryMenu(directory[option]->children);
+    SongLibraryMenu(directory[option - 1]->children);
   }
   else
   {
-    SongMenu(directory[option]);
+    SongMenu(directory[option - 1]);
   }
 }
 
@@ -95,6 +96,11 @@ void SongMenu(TreeNode* musicFile)
 {
   int option = -1;
   DoublyLinkedList songQueue;
+  std::string musicPath = musicFile->path.u8string();
+  // convert path to const TCHAR* for use in PlaySound
+  std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
+  const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
+
   std::cout << std::endl;
   // Display selected music title
   std::cout << musicFile->path.stem() << std::endl;
@@ -112,8 +118,8 @@ void SongMenu(TreeNode* musicFile)
     case 0:
       SongLibraryMenu(musicFile->parent->children);
     case 1:
-      songQueue.AddEnd(musicFile->path.u8string());
-      PlaySound((const TCHAR*)musicFile->path.u8string().c_str(), NULL,
+      songQueue.AddEnd(musicPath);
+      PlaySound(constTcharMusicPath, NULL,
                 SND_FILENAME | SND_ASYNC);  // To play the corresponding song
       PlayingSongMenu(songQueue);
       break;
@@ -144,10 +150,13 @@ void PlayingSongMenu(DoublyLinkedList songQueue)
       // TODO: remove comment when at is implemented in doubly linked list
       // PlaySound(NULL, 0, 0);
       // PlaySound((const TCHAR*)songQueue.At(currentSongIndex).c_str(), 0, 0);
+      PlayingSongMenu(songQueue);
       break;
     case 2:
+      PlayingSongMenu(songQueue);
       break;
     case 3:
+      PlayingSongMenu(songQueue);
       break;
   }
 }
