@@ -32,6 +32,9 @@
     <ClInclude Include="tree\DirectoryTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="tree\TreeNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="vector\Vector.h">

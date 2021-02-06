@@ -4,20 +4,20 @@ DirectoryTree::DirectoryTree()
 {
 }
 
-DirectoryTree::DirectoryTree(Node* node)
+DirectoryTree::DirectoryTree(TreeNode* node)
 {
-  rootNode = node;
-  AddFilesAndDirectoriesToRoot(rootNode);
-  SortFilesAndDirectories(rootNode);
+  rootTreeNode = node;
+  AddFilesAndDirectoriesToRoot(rootTreeNode);
+  SortFilesAndDirectories(rootTreeNode);
 }
 
 DirectoryTree::~DirectoryTree()
 {
-  delete rootNode;
+  delete rootTreeNode;
 }
 
-// Recursively populates rootNode with files and directories
-void DirectoryTree::AddFilesAndDirectoriesToRoot(Node*& node)
+// Recursively populates rootTreeNode with files and directories
+void DirectoryTree::AddFilesAndDirectoriesToRoot(TreeNode*& node)
 {
   if (fs::is_empty(node->path))
   {
@@ -26,25 +26,27 @@ void DirectoryTree::AddFilesAndDirectoriesToRoot(Node*& node)
 
   for (const auto& entry : fs::directory_iterator(node->path))
   {
+    // If the file isnt a directory, add it to the children of the current TreeNode
     if (!fs::is_directory(entry))
     {
-      Node* temp = NewNode(entry, false);
+      TreeNode* temp = NewTreeNode(entry, false, node);
       node->children.PushBack(temp);
     }
     else
     {
-      Node* temp = NewNode(entry, true);
+      // TODO:: Only add mp3 or wav files
+      TreeNode* temp = NewTreeNode(entry, true, node);
       node->children.PushBack(temp);
-      Node* directoryNode = node->children.Back();
-      AddFilesAndDirectoriesToRoot(directoryNode);
+      TreeNode* directoryTreeNode = node->children.Back();
+      AddFilesAndDirectoriesToRoot(directoryTreeNode);
     }
   }
 }
 
-void DirectoryTree::SortFilesAndDirectories(Node*& node)
+void DirectoryTree::SortFilesAndDirectories(TreeNode*& node)
 {
-  Vector<Node*> directories;
-  Vector<Node*> files;
+  Vector<TreeNode*> directories;
+  Vector<TreeNode*> files;
   for (size_t i = 0; i < node->children.Size(); i++)
   {
     if (node->children[i]->isDirectory == false)
