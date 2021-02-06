@@ -153,11 +153,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DoublyLinkedList.cpp" />
     <ClCompile Include="DSA_Assignment.cpp" />
-    <ClCompile Include="Stack.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stack_pointerBased.h" />
+    <ClInclude Include="DoublyLinkedList.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector.h" />
