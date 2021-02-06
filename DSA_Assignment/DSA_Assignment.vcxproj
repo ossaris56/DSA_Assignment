@@ -155,12 +155,13 @@
   <ItemGroup>
     <ClCompile Include="DoublyLinkedList.cpp" />
     <ClCompile Include="DSA_Assignment.cpp" />
+    <ClCompile Include="tree\DirectoryTree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DoublyLinkedList.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DirectoryTree.h" />
+    <ClInclude Include="tree\DirectoryTree.h" />
     <ClInclude Include="vector\Vector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
