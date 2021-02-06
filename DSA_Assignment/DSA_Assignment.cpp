@@ -6,7 +6,6 @@
 #include <filesystem>
 #include <Windows.h>
 #include <mmsystem.h>
-#include "vector/vector.h"
 
 namespace fs = std::filesystem;
 
@@ -22,12 +21,6 @@ int main()
     std::cout << "[2] Organize songs" << std::endl;
     std::cout << "[0] Exit" << std::endl;
     std::cin >> option;
-
-    Vector<int> vector;
-    vector.PushBack(1);
-    vector.PushBack(1);
-    vector.PushBack(1);
-    vector.Print();
 
     if (option == 1)
     {
