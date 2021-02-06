@@ -154,7 +154,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DSA_Assignment.cpp" />
-    <ClCompile Include="DirectoryTree.cpp" />
+    <ClCompile Include="Stack.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stack_pointerBased.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectoryTree.h" />

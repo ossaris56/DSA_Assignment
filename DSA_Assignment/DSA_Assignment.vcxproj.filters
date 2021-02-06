@@ -18,6 +18,14 @@
     <ClCompile Include="DSA_Assignment.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Stack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stack_pointerBased.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClCompile Include="DirectoryTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
