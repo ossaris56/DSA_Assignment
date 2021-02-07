@@ -40,7 +40,7 @@ void MainMenu()
   while (option != 0)
   {
     std::cout << std::endl;
-    std::cout << "Music Player" << std::endl;
+    std::cout << "Tunes Player" << std::endl;
     std::cout << "==========================" << std::endl;
     std::cout << "[1] View song library" << std::endl;
     std::cout << "[2] View playlists" << std::endl;
@@ -70,8 +70,8 @@ void MainMenu()
   }
 }
 
-//void SearchSong(Vector<TreeNode*> directory)
-//{ 
+// void SearchSong(Vector<TreeNode*> directory)
+//{
 //  Vector<std::string> dummy;
 //  dummy.PushBack("Flower");
 //  dummy.PushBack("blah");
@@ -82,7 +82,7 @@ void MainMenu()
 //  item = std::find(dummy.Begin(), dummy.End(), userTitle);
 //  if (item != dummy.Size())
 //  {
-//    std::cout << item - dummy.Begin() << " (counting from zero) \n"; 
+//    std::cout << item - dummy.Begin() << " (counting from zero) \n";
 //  }
 //}
 
@@ -119,7 +119,7 @@ void AllPlaylistsMenu(Vector<Playlist*>* playlists)
   // If user selects a playlist
   if (option <= playlists->Size())
   {
-    PlaylistMenu(playlists->operator[](option-1));
+    PlaylistMenu(playlists->operator[](option - 1));
   }
 
   // Create a new playlist
@@ -196,7 +196,8 @@ void PlaylistMenu(Playlist* playlist)
   std::cout << "==========================" << std::endl;
   for (size_t i = 1; i <= playlist->songs->GetLength(); i++)
   {
-    std::string songName = "[" + std::to_string(i) + "] " + playlist->songs->Get(i - 1)->data;
+    std::string songName =
+        "[" + std::to_string(i) + "] " + playlist->songs->Get(i - 1)->data.filename().u8string();
     std::cout << songName << std::endl;
   }
   if (playlist->songs->GetLength() < 1)
@@ -297,7 +298,16 @@ void SongMenu(TreeNode* musicFile)
       PlayingSongMenu(songQueue);
       break;
     case 2:
-      AddSongToPlaylist(musicFile);
+      if (SongVariables::playlists->Size() <= 0)
+      {
+        std::cout << "No playlist found, please create a new playlist" << std::endl;
+        AddPlaylist();
+        SongMenu(musicFile);
+      }
+      else
+      {
+        AddSongToPlaylist(musicFile);
+      }
       break;
     default:
       std::cout << "Invalid input, please try again." << std::endl;
@@ -312,11 +322,12 @@ void AddSongToPlaylist(TreeNode* musicFile)
 
   if (playlists->Size() == 0)
   {
-    std::cout << "\nNo playlists available" << std::endl;
+    std::cout << std::endl;
+    std::cout << "No playlists available" << std::endl;
   }
   else
   {
-    std::cout << "Playlists available:" << std::endl;
+    std::cout << "Playlists :" << std::endl;
   }
   std::cout << "[0] Songs Menu" << std::endl;
   std::cout << "[1] Add playlist" << std::endl;
@@ -335,8 +346,7 @@ void AddSongToPlaylist(TreeNode* musicFile)
   if (playlistOption == 1)
   {
     std::cout << std::endl;
-    AddPlaylist();
-    std::string musicFileString = musicFile->path.u8string();
+    fs::path musicFileString = musicFile->path.u8string();
     playlists->operator[](playlistOption - 2)->songs->AddEnd(musicFileString);
     std::cout << musicFile->path.filename().u8string() << " successfully added into "
               << playlists->operator[](playlistOption - 2)->name << std::endl;
@@ -362,7 +372,7 @@ void PlayingSongMenu(DoublyLinkedList songQueue)
   int option = -1;
   static int currentSongIndex = 0;
   // Convert music path to const TCHAR* for use in PlaySound()
-  std::string musicPath = songQueue.GetCurrent()->data;
+  std::string musicPath = songQueue.GetCurrent()->data.u8string();
   std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
   const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
 
@@ -392,7 +402,7 @@ void PlayingSongMenu(DoublyLinkedList songQueue)
     {
       PlaySound(NULL, 0, 0);
       songQueue.Forward();
-      std::string musicPath = songQueue.GetCurrent()->data;
+      std::string musicPath = songQueue.GetCurrent()->data.u8string();
       std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
       const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
       PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
@@ -403,7 +413,7 @@ void PlayingSongMenu(DoublyLinkedList songQueue)
     {
       PlaySound(NULL, 0, 0);
       songQueue.Backward();
-      std::string musicPath = songQueue.GetCurrent()->data;
+      std::string musicPath = songQueue.GetCurrent()->data.u8string();
       std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
       const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
       PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
