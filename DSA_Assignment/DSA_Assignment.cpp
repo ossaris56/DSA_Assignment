@@ -21,12 +21,18 @@ void PlayingSongMenu(DoublyLinkedList songQueue);
 void AllPlaylistsMenu(Vector<Playlist*>* playlists);
 void PlaylistMenu(Playlist* playlist);
 Vector<TreeNode*> GetRootMusicDirectory();
+DoublyLinkedList playlistQueue;
+
+namespace SongVariables
+{
+Vector<Playlist*>* playlists = new Vector<Playlist*>;
+}
 
 void MainMenu()
 {
   int option = -1;
   Vector<TreeNode*> rootMusicDirectory = GetRootMusicDirectory();
-  static Vector<Playlist*>* playlists = new Vector<Playlist*>;
+  // static Vector<Playlist*>* playlists = new Vector<Playlist*>;
   while (option != 0)
   {
     std::cout << std::endl;
@@ -47,7 +53,7 @@ void MainMenu()
         SongLibraryMenu(rootMusicDirectory);
         break;
       case 2:
-        AllPlaylistsMenu(playlists);
+        AllPlaylistsMenu(SongVariables::playlists);
         break;
       default:
         std::cout << "Invalid input, please try again" << std::endl;
