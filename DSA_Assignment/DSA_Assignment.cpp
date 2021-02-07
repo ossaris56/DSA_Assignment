@@ -457,8 +457,11 @@ void PlayingSongMenu(DoublyLinkedList* songQueue)
 
   std::cout << "[0] Stop and Exit" << std::endl;
   std::cout << "[1] Replay" << std::endl;
-  std::cout << "[2] Next" << std::endl;
-  std::cout << "[3] Previous" << std::endl;
+  if (songQueue->GetLength() > 1)
+  {
+    std::cout << "[2] Next" << std::endl;
+    std::cout << "[3] Previous" << std::endl;
+  }
   std::cout << "Select Option:";
   std::cin >> option;
 
@@ -477,28 +480,31 @@ void PlayingSongMenu(DoublyLinkedList* songQueue)
       PlayingSongMenu(songQueue);
       return;
     }
-    case 2:
-    {
-      PlaySound(NULL, 0, 0);
-      songQueue->Forward();
-      std::string musicPath = songQueue->GetCurrent()->data.u8string();
-      std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
-      const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
-      PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
-      PlayingSongMenu(songQueue);
-      return;
-    }
-    case 3:
-    {
-      PlaySound(NULL, 0, 0);
-      songQueue->Backward();
-      std::string musicPath = songQueue->GetCurrent()->data.u8string();
-      std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
-      const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
-      PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
-      PlayingSongMenu(songQueue);
-      return;
-    }
+      if (songQueue->GetLength() > 1)
+      {
+        case 2:
+        {
+          PlaySound(NULL, 0, 0);
+          songQueue->Forward();
+          std::string musicPath = songQueue->GetCurrent()->data.u8string();
+          std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
+          const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
+          PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
+          PlayingSongMenu(songQueue);
+          return;
+        }
+        case 3:
+        {
+          PlaySound(NULL, 0, 0);
+          songQueue->Backward();
+          std::string musicPath = songQueue->GetCurrent()->data.u8string();
+          std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
+          const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
+          PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
+          PlayingSongMenu(songQueue);
+          return;
+        }
+      }
   }
 }
 
