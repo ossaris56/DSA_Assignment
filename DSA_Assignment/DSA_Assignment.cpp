@@ -193,23 +193,29 @@ void PlaylistMenu(Playlist* playlist)
   int option = -1;
   std::cout << playlist->name << std::endl;
   std::cout << "==========================" << std::endl;
-  for (size_t i = 1; i <= playlist->songs->GetLength(); i++)
+  std::cout << "[0] Main Menu" << std::endl;
+  std::cout << "[1] Remove song" << std::endl;
+
+  for (size_t i = 2; i <= playlist->songs->GetLength() + 1; i++)
   {
     std::string songName =
-        "[" + std::to_string(i) + "] " + playlist->songs->Get(i - 1)->data.filename().u8string();
+        "[" + std::to_string(i) + "] " + playlist->songs->Get(i - 2)->data.filename().u8string();
     std::cout << songName << std::endl;
   }
   if (playlist->songs->GetLength() < 1)
   {
     std::cout << "No songs added yet, add some songs!" << std::endl;
   }
-  std::cout << "[0] Main Menu" << std::endl;
   std::cout << "Select option: ";
   std::cin >> option;
 
   if (option == 0)
   {
     MainMenu();
+  }
+  if (option == 1)
+  {
+    std::cout << "remove song" << std::endl;
   }
   if (option < 0 || option > playlist->songs->GetLength())
   {
