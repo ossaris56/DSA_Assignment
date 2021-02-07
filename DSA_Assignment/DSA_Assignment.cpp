@@ -182,7 +182,6 @@ void SongMenu(TreeNode* musicFile)
 {
   int option = -1;
   DoublyLinkedList songQueue;
-  Vector<Playlist*> playlists;
   std::string musicPath = musicFile->path.u8string();
   // convert path to const TCHAR* for use in PlaySound
   std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
@@ -212,7 +211,7 @@ void SongMenu(TreeNode* musicFile)
       PlayingSongMenu(songQueue);
       break;
     case 2:
-      AddSongToPlaylist(playlists);
+      AddSongToPlaylist(playlists, musicFile);
       break;
     default:
       std::cout << "Invalid input, please try again." << std::endl;
@@ -220,23 +219,33 @@ void SongMenu(TreeNode* musicFile)
   }
 }
 
-void AddSongToPlaylist(Vector<Playlist*> playlists)
+void AddSongToPlaylist(Vector<Playlist*>* playlists, TreeNode* musicFile)
 {
+  int playlistOption = -1;
   std::cout << "Playlists available:" << std::endl;
 
-  if (playlists.Size() == 0)
+  if (playlists->Size() == 0)
   {
     std::cout << "No playlists available" << std::endl;
   }
 
-  for (size_t i = 1; i <= playlists.Size(); i++)
+  for (size_t i = 1; i <= playlists->Size(); i++)
   {
-    std::string playlistName = "[" + std::to_string(i) + "] " + playlists[i - 1]->name;
+    std::string playlistName = "[" + std::to_string(i) + "] " + playlists->operator[](i - 1)->name;
     std::cout << playlistName << std::endl;
   }
   std::cout << "[0] Songs Menu" << std::endl;
   std::cout << "Select option: ";
   std::cin >> playlistOption;
+  if (playlistOption == 0) 
+  {
+    SongMenu(musicFile);
+  }
+  if (playlistOption < 0 || playlistOption > playlists->Size()) 
+  {
+    std::cout << "Invaild input, please try again." << std::endl;
+    AddSongToPlaylist(playlists, musicFile);
+  }
 }
 
 void PlayingSongMenu(DoublyLinkedList songQueue)
