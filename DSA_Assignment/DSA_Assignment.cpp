@@ -42,8 +42,7 @@ void MainMenu()
     std::cout << "==========================" << std::endl;
     std::cout << "[1] View song library" << std::endl;
     std::cout << "[2] View playlists" << std::endl;
-    std::cout << "[3] Organize songs" << std::endl;
-    std::cout << "[4] Search" << std::endl;
+    std::cout << "[3] Search Songs" << std::endl;
     std::cout << "[0] Exit" << std::endl;
     std::cout << "Enter option: ";
     std::cin >> option;
@@ -182,6 +181,14 @@ void SongLibraryMenu(Vector<TreeNode*> directory)
     std::string musicName = "[" + std::to_string(i) + "] ";
     // Get filename of current file and append it into musicName
     musicName += directory[i - 1]->path.filename().u8string();
+    if (directory[i - 1]->isDirectory)
+    {
+      musicName += " (Directory)";
+    }
+    else
+    {
+      musicName += " (File)";
+    }
     std::cout << musicName << std::endl;
   }
   std::cout << "Select Song/Folder : ";
