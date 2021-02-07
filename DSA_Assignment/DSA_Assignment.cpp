@@ -24,6 +24,7 @@ Vector<TreeNode*> GetRootMusicDirectory();
 void AddSongToPlaylist(TreeNode* musicFile);
 void AddPlaylist();
 void RemovePlaylist();
+void SearchSong(Vector<TreeNode*> directory);
 
 namespace SongVariables
 {
@@ -56,12 +57,33 @@ void MainMenu()
       case 2:
         AllPlaylistsMenu(SongVariables::playlists);
         break;
+      case 3:
+        break;
+      case 4:
+        /*SearchSong(rootMusicDirectory);*/
+        break;
       default:
         std::cout << "Invalid input, please try again" << std::endl;
         break;
     }
   }
 }
+
+// void SearchSong(Vector<TreeNode*> directory)
+//{
+//  Vector<std::string> dummy;
+//  dummy.PushBack("Flower");
+//  dummy.PushBack("blah");
+//  std::vector<std::string>::iterator item;
+//  std::string userTitle;
+//  std::cout << "Enter title: ";
+//  std::cin >> userTitle;
+//  item = std::find(dummy.Begin(), dummy.End(), userTitle);
+//  if (item != dummy.Size())
+//  {
+//    std::cout << item - dummy.Begin() << " (counting from zero) \n";
+//  }
+//}
 
 void AllPlaylistsMenu(Vector<Playlist*>* playlists)
 {
@@ -101,6 +123,7 @@ void AllPlaylistsMenu(Vector<Playlist*>* playlists)
   if (option == (playlists->Size() + 1))
   {
     AddPlaylist();
+    AllPlaylistsMenu(SongVariables::playlists);
   }
 
   // Remove an existing playlist
@@ -161,11 +184,21 @@ void AddPlaylist()
   newPlaylist->currentIndex = 0;
   SongVariables::playlists->PushBack(newPlaylist);
   std::cout << "Successfully added " << playlistName << std::endl;
-  AllPlaylistsMenu(SongVariables::playlists);
 }
 
 void PlaylistMenu(Playlist* playlist)
 {
+  int option = -1;
+  std::cout << playlist->name << std::endl;
+  std::cout << "==========================" << std::endl;
+  for (size_t i = 1; i <= playlist->songs->GetLength(); i++)
+  {
+    std::string songName = "[" + std::to_string(i) + "] " + playlist->songs->Get(i - 1)->data;
+    std::cout << songName << std::endl;
+  }
+  std::cout << "[0] Main Menu" << std::endl;
+  std::cout << "Select option: ";
+  std::cin >> option;
 }
 
 void SongLibraryMenu(Vector<TreeNode*> directory)
@@ -226,9 +259,7 @@ void SongMenu(TreeNode* musicFile)
   std::cout << musicFile->path.stem() << std::endl;
   std::cout << "==========================" << std::endl;
   std::cout << "[1] Play Song" << std::endl;
-  // Check if song is in playlist
-  std::cout << "[2] Add to Playlist" << std::endl;  // If song is not in playlist
-  // std::cout << "[2] Remove from Playlist" << std::endl;  // If song is in playlist
+  std::cout << "[2] Add to Playlist" << std::endl;
   std::cout << "[0] Song Library" << std::endl;
   std::cout << "Select Option:";
   std::cin >> option;
@@ -245,7 +276,16 @@ void SongMenu(TreeNode* musicFile)
       PlayingSongMenu(songQueue);
       break;
     case 2:
-      AddSongToPlaylist(musicFile);
+      if (SongVariables::playlists->Size() <= 0)
+      {
+        std::cout << "No playlist found, please create a new playlist" << std::endl;
+        AddPlaylist();
+        SongMenu(musicFile);
+      }
+      else
+      {
+        AddSongToPlaylist(musicFile);
+      }
       break;
     default:
       std::cout << "Invalid input, please try again." << std::endl;
@@ -260,11 +300,12 @@ void AddSongToPlaylist(TreeNode* musicFile)
 
   if (playlists->Size() == 0)
   {
+    std::cout << std::endl;
     std::cout << "No playlists available" << std::endl;
   }
   else
   {
-    std::cout << "Playlists available:" << std::endl;
+    std::cout << "Playlists :" << std::endl;
   }
   std::cout << "[0] Songs Menu" << std::endl;
   std::cout << "[1] Add playlist" << std::endl;
@@ -283,7 +324,10 @@ void AddSongToPlaylist(TreeNode* musicFile)
   if (playlistOption == 1)
   {
     std::cout << std::endl;
-    AddPlaylist();
+    std::string musicFileString = musicFile->path.u8string();
+    playlists->operator[](playlistOption - 2)->songs->AddEnd(musicFileString);
+    std::cout << musicFile->path.stem() << " successfully added into "
+              << playlists->operator[](playlistOption - 2)->name << std::endl;
     SongMenu(musicFile);
   }
   else if (playlistOption < 0 || playlistOption > playlists->Size() + 1)
