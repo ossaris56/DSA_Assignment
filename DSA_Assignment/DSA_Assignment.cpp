@@ -22,6 +22,8 @@ void AllPlaylistsMenu(Vector<Playlist*>* playlists);
 void PlaylistMenu(Playlist* playlist);
 Vector<TreeNode*> GetRootMusicDirectory();
 
+DoublyLinkedList playlistQueue;
+
 void MainMenu()
 {
   int option = -1;
@@ -226,6 +228,7 @@ void PlayingSongMenu(DoublyLinkedList songQueue)
   std::cout << "[1] Replay" << std::endl;
   std::cout << "[2] Next" << std::endl;
   std::cout << "[3] Previous" << std::endl;
+  std::cout << "Select Option:";
   std::cin >> option;
 
   switch (option)
