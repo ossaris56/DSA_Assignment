@@ -45,7 +45,7 @@ void SongMenu(int musicOption)
   if (musicMenu == 1)
   {
     int stopMusic = 0;
-    PlaySound(TEXT("../assets/DryFlower.wav"), NULL,
+    PlaySound(TEXT("../music/DryFlower.wav"), NULL,
               SND_FILENAME | SND_ASYNC);  // To play the corresponding song
     std::cout << "[0] Back" << std::endl;
     std::cout << "Press 1 to stop : ";
