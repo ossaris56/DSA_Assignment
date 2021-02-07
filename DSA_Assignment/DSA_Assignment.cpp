@@ -53,10 +53,10 @@ void MainMenu()
         return;
       case 1:
         SongLibraryMenu(rootMusicDirectory);
-        break;
+        return;
       case 2:
         AllPlaylistsMenu(SongVariables::playlists);
-        break;
+        return;
       default:
         std::cout << "Invalid input, please try again" << std::endl;
         break;
@@ -329,14 +329,12 @@ void SongMenu(TreeNode* musicFile)
     case 0:
       SongLibraryMenu(GetRootMusicDirectory());
       return;
-      break;
     case 1:
       songQueue->AddEnd(musicPath);
       PlaySound(constTcharMusicPath, NULL,
                 SND_FILENAME | SND_ASYNC);  // To play the corresponding song
       PlayingSongMenu(songQueue);
       return;
-      break;
     case 2:
       if (SongVariables::playlists->Size() <= 0)
       {
@@ -437,15 +435,13 @@ void PlayingSongMenu(DoublyLinkedList* songQueue)
       PlaySound(NULL, 0, 0);
       SongLibraryMenu(GetRootMusicDirectory());
       return;
-      break;  //
-    case 1:   //
+    case 1:  //
     {
       // Stop playing song
       PlaySound(NULL, 0, 0);
       PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
       PlayingSongMenu(songQueue);
       return;
-      break;
     }
     case 2:
     {
@@ -457,7 +453,6 @@ void PlayingSongMenu(DoublyLinkedList* songQueue)
       PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
       PlayingSongMenu(songQueue);
       return;
-      break;
     }
     case 3:
     {
@@ -469,7 +464,6 @@ void PlayingSongMenu(DoublyLinkedList* songQueue)
       PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
       PlayingSongMenu(songQueue);
       return;
-      break;
     }
   }
 }
