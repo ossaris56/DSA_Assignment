@@ -315,6 +315,11 @@ void SongMenu(TreeNode* musicFile)
   }
 }
 
+void RemoveSongFromPlaylist(DoublyLinkedList songQueue)
+{
+    
+}
+
 void AddSongToPlaylist(TreeNode* musicFile)
 {
   int playlistOption = -1;
