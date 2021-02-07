@@ -27,6 +27,7 @@ void AddPlaylist();
 void RemovePlaylist();
 TreeNode* SearchSong(Vector<TreeNode*> directory, std::string input);
 Playlist* SearchPlaylist(Vector<Playlist*>* playlists, std::string input);
+void RemoveSongFromPlaylist(Playlist* playlist);
 
 namespace SongVariables
 {
@@ -430,6 +431,7 @@ void RemoveSongFromPlaylist(Playlist* playlist)
 
 void AddSongToPlaylist(TreeNode* musicFile)
 {
+  std::cout << std::endl;
   int playlistOption = -1;
   Vector<Playlist*>* playlists = SongVariables::playlists;
 
