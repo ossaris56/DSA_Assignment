@@ -267,6 +267,7 @@ void SongLibraryMenu(Vector<TreeNode*> directory)
   std::cin >> option;
   if (option == 0)
   {
+    MainMenu();
     return;
   }
 
