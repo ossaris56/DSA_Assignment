@@ -1,6 +1,12 @@
 #pragma once
 #include <iostream>
 
+/*
+  Name : Chua Zhao Lin Jasper
+  Team : Team 3
+  Student ID : S10177296F
+  Cool Features : Working operators and templated class
+*/
 template <class T>
 class Vector
 {
@@ -12,6 +18,7 @@ class Vector
  public:
   typedef T* iterator;
 
+  // Vector constructor
   Vector()
   {
     arr = new T[1];
@@ -19,6 +26,7 @@ class Vector
     size = 0;
   }
 
+  // Appends an object to the end of the vector
   void PushBack(T data)
   {
     // create new array with more space to accomodate more items
@@ -52,6 +60,7 @@ class Vector
     return arr + Size();
   }
 
+  // Inserts data at a specified index
   void InsertAt(T data, int index)
   {
     if (index == capacity)
@@ -60,11 +69,13 @@ class Vector
       arr[index] = data;
   }
 
+  // Gets an object at a specified index
   T Get(int index)
   {
     if (index < size) return arr[index];
   }
 
+  // Removes an object at a specified index
   void RemoveAt(int index)
   {
     delete arr[index];
@@ -77,22 +88,26 @@ class Vector
     size--;
   }
 
+  // Remove an object at the end of the vector
   void Pop()
   {
     delete arr[size];
     size--;
   }
 
+  // Returns the size of the vector
   int Size()
   {
     return size;
   }
 
+  // Returns the last item of the vector
   T& Back()
   {
     return arr[size - 1];
   }
 
+  // Prints the items of the vector
   void Print()
   {
     for (size_t i = 0; i < size; i++)
@@ -101,11 +116,13 @@ class Vector
     }
   }
 
+  // Square bracket operators to access an index of the vector
   T& operator[](int index)
   {
     return arr[index];
   }
 
+  // Equal operator to assign a new vector into the current vector
   Vector<T>& operator=(Vector<T>& vector)
   {
     delete[] arr;

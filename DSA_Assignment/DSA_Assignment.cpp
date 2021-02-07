@@ -34,6 +34,7 @@ namespace SongVariables
 Vector<Playlist*>* playlists = new Vector<Playlist*>;
 }
 
+// Displays the main menu
 void MainMenu()
 {
   int option = -1;
@@ -404,7 +405,7 @@ void RemoveSongFromPlaylist(Playlist* playlist)
   std::cout << "Remove Song" << std::endl;
   std::cout << "==========================" << std::endl;
   playlist->songs->Print();
-  if (playlist->songs->GetLength()-1 < 0)
+  if (playlist->songs->GetLength() - 1 < 0)
   {
     std::cout << "No songs in this playlist to remove!" << std::endl;
   }
@@ -424,7 +425,7 @@ void RemoveSongFromPlaylist(Playlist* playlist)
   {
     std::cout << playlist->songs->Get(option - 1)->data.filename().u8string()
               << " has been removed from " << playlist->name << std::endl;
-    playlist->songs->DeleteItem(option-1);
+    playlist->songs->DeleteItem(option - 1);
   }
   PlaylistMenu(playlist);
 }
