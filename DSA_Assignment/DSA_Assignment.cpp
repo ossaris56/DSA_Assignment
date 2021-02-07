@@ -17,7 +17,7 @@ namespace fs = std::filesystem;
 void MainMenu();
 void SongMenu(TreeNode* musicFile);
 void SongLibraryMenu(Vector<TreeNode*> directory);
-void PlayingSongMenu(DoublyLinkedList songQueue);
+void PlayingSongMenu(DoublyLinkedList* songQueue);
 void AllPlaylistsMenu(Vector<Playlist*>* playlists);
 void PlaylistMenu(Playlist* playlist);
 Vector<TreeNode*> GetRootMusicDirectory();
@@ -25,7 +25,6 @@ void AddSongToPlaylist(TreeNode* musicFile);
 void AddPlaylist();
 void RemovePlaylist();
 void SearchSong(Vector<TreeNode*> directory);
-void PlaylistSongOptions();
 
 namespace SongVariables
 {
@@ -194,23 +193,29 @@ void PlaylistMenu(Playlist* playlist)
   int option = -1;
   std::cout << playlist->name << std::endl;
   std::cout << "==========================" << std::endl;
-  for (size_t i = 1; i <= playlist->songs->GetLength(); i++)
+  std::cout << "[0] Main Menu" << std::endl;
+  std::cout << "[1] Remove song" << std::endl;
+
+  for (size_t i = 2; i <= playlist->songs->GetLength() + 1; i++)
   {
     std::string songName =
-        "[" + std::to_string(i) + "] " + playlist->songs->Get(i - 1)->data.filename().u8string();
+        "[" + std::to_string(i) + "] " + playlist->songs->Get(i - 2)->data.filename().u8string();
     std::cout << songName << std::endl;
   }
   if (playlist->songs->GetLength() < 1)
   {
     std::cout << "No songs added yet, add some songs!" << std::endl;
   }
-  std::cout << "[0] Main Menu" << std::endl;
   std::cout << "Select option: ";
   std::cin >> option;
 
   if (option == 0)
   {
     MainMenu();
+  }
+  if (option == 1)
+  {
+    std::cout << "remove song" << std::endl;
   }
   if (option < 0 || option > playlist->songs->GetLength())
   {
@@ -270,7 +275,7 @@ void SongLibraryMenu(Vector<TreeNode*> directory)
 void SongMenu(TreeNode* musicFile)
 {
   int option = -1;
-  DoublyLinkedList songQueue;
+  DoublyLinkedList* songQueue = new DoublyLinkedList();
   std::string musicPath = musicFile->path.u8string();
   // convert path to const TCHAR* for use in PlaySound
   std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
@@ -292,7 +297,7 @@ void SongMenu(TreeNode* musicFile)
       SongLibraryMenu(GetRootMusicDirectory());
       break;
     case 1:
-      songQueue.AddEnd(musicPath);
+      songQueue->AddEnd(musicPath);
       PlaySound(constTcharMusicPath, NULL,
                 SND_FILENAME | SND_ASYNC);  // To play the corresponding song
       PlayingSongMenu(songQueue);
@@ -372,12 +377,12 @@ void AddSongToPlaylist(TreeNode* musicFile)
   }
 }
 
-void PlayingSongMenu(DoublyLinkedList songQueue)
+void PlayingSongMenu(DoublyLinkedList* songQueue)
 {
   int option = -1;
   static int currentSongIndex = 0;
   // Convert music path to const TCHAR* for use in PlaySound()
-  std::string musicPath = songQueue.GetCurrent()->data.u8string();
+  std::string musicPath = songQueue->GetCurrent()->data.u8string();
   std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
   const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
 
@@ -406,8 +411,8 @@ void PlayingSongMenu(DoublyLinkedList songQueue)
     case 2:
     {
       PlaySound(NULL, 0, 0);
-      songQueue.Forward();
-      std::string musicPath = songQueue.GetCurrent()->data.u8string();
+      songQueue->Forward();
+      std::string musicPath = songQueue->GetCurrent()->data.u8string();
       std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
       const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
       PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
@@ -417,8 +422,8 @@ void PlayingSongMenu(DoublyLinkedList songQueue)
     case 3:
     {
       PlaySound(NULL, 0, 0);
-      songQueue.Backward();
-      std::string musicPath = songQueue.GetCurrent()->data.u8string();
+      songQueue->Backward();
+      std::string musicPath = songQueue->GetCurrent()->data.u8string();
       std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
       const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
       PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
