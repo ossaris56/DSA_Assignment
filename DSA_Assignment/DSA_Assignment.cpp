@@ -21,7 +21,7 @@ void PlayingSongMenu(DoublyLinkedList songQueue);
 void AllPlaylistsMenu(Vector<Playlist*>* playlists);
 void PlaylistMenu(Playlist* playlist);
 Vector<TreeNode*> GetRootMusicDirectory();
-DoublyLinkedList playlistQueue;
+void AddSongToPlaylist(Vector<Playlist*>* playlists, TreeNode* musicFile);
 
 namespace SongVariables
 {
@@ -217,7 +217,7 @@ void SongMenu(TreeNode* musicFile)
       PlayingSongMenu(songQueue);
       break;
     case 2:
-      AddSongToPlaylist(playlists, musicFile);
+      AddSongToPlaylist(SongVariables::playlists, musicFile);
       break;
     default:
       std::cout << "Invalid input, please try again." << std::endl;
@@ -247,10 +247,15 @@ void AddSongToPlaylist(Vector<Playlist*>* playlists, TreeNode* musicFile)
   {
     SongMenu(musicFile);
   }
-  if (playlistOption < 0 || playlistOption > playlists->Size()) 
+  else if (playlistOption < 0 || playlistOption > playlists->Size()) 
   {
     std::cout << "Invaild input, please try again." << std::endl;
     AddSongToPlaylist(playlists, musicFile);
+  }
+  else
+  {
+    std::string musicFileString = musicFile->path.u8string();
+    playlists->operator[](playlistOption - 1)->songs->AddEnd(musicFileString);
   }
 }
 

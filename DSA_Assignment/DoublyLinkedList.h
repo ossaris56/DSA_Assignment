@@ -25,6 +25,6 @@ class DoublyLinkedList
   void ForwardTraverse();
   void BackwardTraverse();
   LinkedListNode* Get(int index);
-  void print();
-  int getLength();
+  void Print();
+  int GetLength();
 };

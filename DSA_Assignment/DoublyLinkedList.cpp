@@ -1,12 +1,12 @@
 #include "DoublyLinkedList.h";
-DoublyLinkedList ::DoublyLinkedList()
+DoublyLinkedList::DoublyLinkedList()
 {
   front = NULL;
   end = NULL;
   size = 0;
 }
 
-void DoublyLinkedList ::AddFront(std::string d)
+void DoublyLinkedList::AddFront(std::string d)
 {
   // Creating new node
   LinkedListNode* temp;
@@ -26,7 +26,7 @@ void DoublyLinkedList ::AddFront(std::string d)
   size++;
 }
 
-void DoublyLinkedList ::AddBefore(LinkedListNode* n, std::string d)
+void DoublyLinkedList::AddBefore(LinkedListNode* n, std::string d)
 {
   LinkedListNode* temp;
   temp = new LinkedListNode();
@@ -40,7 +40,7 @@ void DoublyLinkedList ::AddBefore(LinkedListNode* n, std::string d)
   size++;
 }
 
-void DoublyLinkedList ::AddAfter(LinkedListNode* n, std::string d)
+void DoublyLinkedList::AddAfter(LinkedListNode* n, std::string d)
 {
   LinkedListNode* temp;
   temp = new LinkedListNode();
@@ -54,7 +54,7 @@ void DoublyLinkedList ::AddAfter(LinkedListNode* n, std::string d)
   size++;
 }
 
-void DoublyLinkedList ::AddEnd(std::string d)
+void DoublyLinkedList::AddEnd(std::string d)
 {
   // create new node
   LinkedListNode* temp;
@@ -72,7 +72,7 @@ void DoublyLinkedList ::AddEnd(std::string d)
   size++;
 }
 
-void DoublyLinkedList ::DeleteNode(LinkedListNode* n)
+void DoublyLinkedList::DeleteNode(LinkedListNode* n)
 {
   // if node to be deleted is first node of list
   if (n->prev == NULL)
@@ -98,7 +98,7 @@ void DoublyLinkedList ::DeleteNode(LinkedListNode* n)
   size--;
 }
 
-void DoublyLinkedList ::ForwardTraverse()
+void DoublyLinkedList::ForwardTraverse()
 {
   LinkedListNode* trav;
   trav = front;
@@ -109,7 +109,7 @@ void DoublyLinkedList ::ForwardTraverse()
   }
 }
 
-void DoublyLinkedList ::BackwardTraverse()
+void DoublyLinkedList::BackwardTraverse()
 {
   LinkedListNode* trav;
   trav = end;
@@ -120,7 +120,7 @@ void DoublyLinkedList ::BackwardTraverse()
   }
 }
 
-LinkedListNode* DoublyLinkedList ::Get(int index)
+LinkedListNode* DoublyLinkedList::Get(int index)
 {
   LinkedListNode* current = front;
   int count = 0;
@@ -132,7 +132,7 @@ LinkedListNode* DoublyLinkedList ::Get(int index)
   }
 }
 
-void DoublyLinkedList::print()
+void DoublyLinkedList::Print()
 {
   LinkedListNode* current = front;
   int i = 1;
@@ -146,7 +146,7 @@ void DoublyLinkedList::print()
   }
 }
 
-int DoublyLinkedList::getLength()
+int DoublyLinkedList::GetLength()
 {
   return size;
 }
