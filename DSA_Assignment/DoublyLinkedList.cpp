@@ -7,7 +7,7 @@ DoublyLinkedList::DoublyLinkedList()
   size = 0;
 }
 
-void DoublyLinkedList::AddFront(std::string d)
+void DoublyLinkedList::AddFront(fs::path d)
 {
   // Creating new node
   LinkedListNode* temp;
@@ -30,7 +30,7 @@ void DoublyLinkedList::AddFront(std::string d)
   size++;
 }
 
-void DoublyLinkedList::AddBefore(LinkedListNode* n, std::string d)
+void DoublyLinkedList::AddBefore(LinkedListNode* n, fs::path d)
 {
   LinkedListNode* temp;
   temp = new LinkedListNode();
@@ -44,7 +44,7 @@ void DoublyLinkedList::AddBefore(LinkedListNode* n, std::string d)
   size++;
 }
 
-void DoublyLinkedList::AddAfter(LinkedListNode* n, std::string d)
+void DoublyLinkedList::AddAfter(LinkedListNode* n, fs::path d)
 {
   LinkedListNode* temp;
   temp = new LinkedListNode();
@@ -58,7 +58,7 @@ void DoublyLinkedList::AddAfter(LinkedListNode* n, std::string d)
   size++;
 }
 
-void DoublyLinkedList::AddEnd(std::string d)
+void DoublyLinkedList::AddEnd(fs::path d)
 {
   // create new node
   LinkedListNode* temp;
@@ -73,7 +73,7 @@ void DoublyLinkedList::AddEnd(std::string d)
     front = temp;
     current = temp;
   }
-    
+
   else
     end->next = temp;
   end = temp;
