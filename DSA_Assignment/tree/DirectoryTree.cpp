@@ -29,12 +29,15 @@ void DirectoryTree::AddFilesAndDirectoriesToRoot(TreeNode*& node)
     // If the file isnt a directory, add it to the children of the current TreeNode
     if (!fs::is_directory(entry))
     {
-      TreeNode* temp = NewTreeNode(entry, false, node);
-      node->children.PushBack(temp);
+      if (entry.path().extension() == ".wav")
+      {
+        TreeNode* temp = NewTreeNode(entry, false, node);
+        node->children.PushBack(temp);
+      }
     }
     else
     {
-      // TODO:: Only add mp3 or wav files
+      // Only add wav files as PlaySound only supports wav files
       TreeNode* temp = NewTreeNode(entry, true, node);
       node->children.PushBack(temp);
       TreeNode* directoryTreeNode = node->children.Back();

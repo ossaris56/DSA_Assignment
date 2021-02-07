@@ -3,6 +3,10 @@
 
 bool NaiveSearch(std::string pattern, std::string text)
 {
+  std::transform(pattern.begin(), pattern.end(), pattern.begin(),
+                 [](unsigned char c) { return std::tolower(c); });
+  std::transform(text.begin(), text.end(), text.begin(),
+                 [](unsigned char c) { return std::tolower(c); });
   size_t patternLen = pattern.size();
   size_t textLen = text.size();
 
