@@ -236,6 +236,10 @@ void PlaylistMenu(Playlist* playlist)
   }
   else
   {
+    std::string musicPath = playlist->songs->GetCurrent()->data.u8string();
+    std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
+    const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
+    PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
     PlayingSongMenu(playlist->songs);
     return;
   }
@@ -492,6 +496,9 @@ void PlayingSongMenu(DoublyLinkedList* songQueue)
   std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
   const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
 
+  std::cout << std::endl;
+  std::cout << songQueue->GetCurrent()->data.filename().u8string() << std::endl;
+  std::cout << "==========================" << std::endl;
   std::cout << "[0] Stop and Exit" << std::endl;
   std::cout << "[1] Replay" << std::endl;
   if (songQueue->GetLength() > 1)
