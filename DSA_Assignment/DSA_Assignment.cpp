@@ -227,6 +227,7 @@ void PlaylistMenu(Playlist* playlist)
   if (option == 1)
   {
     RemoveSongFromPlaylist(playlist);
+    return;
   }
   if (option < 0 || option > playlist->songs->GetLength())
   {
@@ -419,12 +420,14 @@ void RemoveSongFromPlaylist(Playlist* playlist)
   {
     std::cout << "Invalid option, please try again." << std::endl;
     RemoveSongFromPlaylist(playlist);
+    return;
   }
   else
   {
     std::cout << playlist->songs->Get(option - 1)->data.filename().u8string()
               << " has been removed from " << playlist->name << std::endl;
     playlist->songs->DeleteItem(option-1);
+    return;
   }
   PlaylistMenu(playlist);
 }
