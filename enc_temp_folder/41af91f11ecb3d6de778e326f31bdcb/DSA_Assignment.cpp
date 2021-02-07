@@ -25,7 +25,6 @@ void AddSongToPlaylist(TreeNode* musicFile);
 void AddPlaylist();
 void RemovePlaylist();
 void SearchSong(Vector<TreeNode*> directory);
-void PlaylistSongOptions();
 
 namespace SongVariables
 {
@@ -90,8 +89,6 @@ void AllPlaylistsMenu(Vector<Playlist*>* playlists)
 {
   int option = -1;
   std::cout << std::endl;
-  std::cout << "Playlists" << std::endl;
-  std::cout << "==========================" << std::endl;
   if (playlists->Size() == 0)
   {
     std::cout << "No playlists available" << std::endl;
@@ -199,27 +196,9 @@ void PlaylistMenu(Playlist* playlist)
     std::string songName = "[" + std::to_string(i) + "] " + playlist->songs->Get(i - 1)->data;
     std::cout << songName << std::endl;
   }
-  if (playlist->songs->GetLength() < 1)
-  {
-    std::cout << "No songs added yet, add some songs!" << std::endl;
-  }
   std::cout << "[0] Main Menu" << std::endl;
   std::cout << "Select option: ";
   std::cin >> option;
-
-  if (option == 0)
-  {
-    MainMenu();
-  }
-  if (option < 0 || option > playlist->songs->GetLength())
-  {
-    std::cout << "Invaild option selected, please try again." << std::endl;
-    PlaylistMenu(playlist);
-  }
-  else
-  {
-    PlayingSongMenu(playlist->songs);
-  }
 }
 
 void SongLibraryMenu(Vector<TreeNode*> directory)
