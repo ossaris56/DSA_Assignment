@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 
-template <typename T>
+template <class T>
 class Vector
 {
  private:
@@ -10,15 +10,13 @@ class Vector
   int size;
 
  public:
+  typedef T* iterator;
+
   Vector()
   {
     arr = new T[1];
     capacity = 1;
     size = 0;
-  }
-  ~Vector()
-  {
-    delete arr;
   }
 
   void PushBack(T data)
@@ -26,7 +24,7 @@ class Vector
     // create new array with more space to accomodate more items
     if (size == capacity)
     {
-      T* temp = new T[capacity * 2];
+      T* temp = new T[2 * capacity];
 
       // copy old items to new array
       for (size_t i = 0; i < capacity; i++)
@@ -44,10 +42,20 @@ class Vector
     size++;
   }
 
+  typename iterator Begin()
+  {
+    return arr;
+  }
+
+  typename iterator End()
+  {
+    return arr + Size();
+  }
+
   void InsertAt(T data, int index)
   {
     if (index == capacity)
-      pushBack(data);
+      PushBack(data);
     else
       arr[index] = data;
   }
@@ -59,6 +67,7 @@ class Vector
 
   void Pop()
   {
+    delete arr[size];
     size--;
   }
 
@@ -85,9 +94,9 @@ class Vector
     return arr[index];
   }
 
-  Vector<T>& operator=(const Vector<T>& vector)
+  Vector<T>& operator=(Vector<T>& vector)
   {
-    delete arr;
+    delete[] arr;
     size = vector.size;
     capacity = vector.capacity;
     arr = new T[size];

@@ -1,35 +1,18 @@
 #pragma once
-#include "../vector/Vector.h"
-#include <filesystem>
+#include "TreeNode.h"
 #include <iostream>
 
 namespace fs = std::filesystem;
 
-struct Node
-{
-  fs::path path;
-  bool isDirectory;
-  Vector<Node*> children;
-};
-
-Node* NewNode(fs::path path, bool isDirectory)
-{
-  Node* temp = new Node;
-  temp->path = path;
-  temp->isDirectory = isDirectory;
-  return temp;
-}
-
 class DirectoryTree
 {
- private:
-  Node* rootNode;
-
  public:
+  TreeNode* rootTreeNode;
+
   DirectoryTree();
-  DirectoryTree(Node* node);
+  DirectoryTree(TreeNode* node);
   ~DirectoryTree();
 
-  void AddFilesAndDirectoriesToRoot(Node*& node);
-  void SortFilesAndDirectories(Node*& node);
+  void AddFilesAndDirectoriesToRoot(TreeNode*& node);
+  void SortFilesAndDirectories(TreeNode*& node);
 };

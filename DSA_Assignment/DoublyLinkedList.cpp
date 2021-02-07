@@ -1,6 +1,6 @@
 #include "DoublyLinkedList.h";
 
-void Doubly_Linked_List ::add_front(int d)
+void DoublyLinkedList ::AddFront(std::string d)
 {
   // Creating new node
   node* temp;
@@ -19,7 +19,7 @@ void Doubly_Linked_List ::add_front(int d)
   front = temp;
 }
 
-void Doubly_Linked_List ::add_before(node* n, int d)
+void DoublyLinkedList ::AddBefore(node* n, std::string d)
 {
   node* temp;
   temp = new node();
@@ -32,7 +32,7 @@ void Doubly_Linked_List ::add_before(node* n, int d)
   if (n->prev == NULL) front = temp;
 }
 
-void Doubly_Linked_List ::add_after(node* n, int d)
+void DoublyLinkedList ::AddAfter(node* n, std::string d)
 {
   node* temp;
   temp = new node();
@@ -45,7 +45,7 @@ void Doubly_Linked_List ::add_after(node* n, int d)
   if (n->next == NULL) end = temp;
 }
 
-void Doubly_Linked_List ::add_end(int d)
+void DoublyLinkedList ::AddEnd(std::string d)
 {
   // create new node
   node* temp;
@@ -62,7 +62,7 @@ void Doubly_Linked_List ::add_end(int d)
   end = temp;
 }
 
-void Doubly_Linked_List ::delete_node(node* n)
+void DoublyLinkedList ::DeleteNode(node* n)
 {
   // if node to be deleted is first node of list
   if (n->prev == NULL)
@@ -87,24 +87,24 @@ void Doubly_Linked_List ::delete_node(node* n)
   delete (n);
 }
 
-void Doubly_Linked_List ::forward_traverse()
+void DoublyLinkedList ::ForwardTraverse()
 {
   node* trav;
   trav = front;
   while (trav != NULL)
   {
-    cout << trav->data << endl;
+    std::cout << trav->data << std::endl;
     trav = trav->next;
   }
 }
 
-void Doubly_Linked_List ::backward_traverse()
+void DoublyLinkedList ::BackwardTraverse()
 {
   node* trav;
   trav = end;
   while (trav != NULL)
   {
-    cout << trav->data << endl;
+    std::cout << trav->data << std::endl;
     trav = trav->prev;
   }
 }
