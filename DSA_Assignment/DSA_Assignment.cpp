@@ -38,7 +38,7 @@ void MainMenu()
   while (option != 0)
   {
     std::cout << std::endl;
-    std::cout << "Music Player" << std::endl;
+    std::cout << "Tunes Player" << std::endl;
     std::cout << "==========================" << std::endl;
     std::cout << "[1] View song library" << std::endl;
     std::cout << "[2] View playlists" << std::endl;
@@ -94,7 +94,7 @@ void AllPlaylistsMenu(Vector<Playlist*>* playlists)
   // If user selects a playlist
   if (option <= playlists->Size())
   {
-    PlaylistMenu(playlists->operator[](option));
+    PlaylistMenu(playlists->operator[](option - 1));
   }
 
   // Create a new playlist
