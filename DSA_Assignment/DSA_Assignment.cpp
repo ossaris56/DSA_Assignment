@@ -22,8 +22,6 @@ void AllPlaylistsMenu(Vector<Playlist*> playlists);
 void PlaylistMenu(Playlist* playlist);
 Vector<TreeNode*> GetRootMusicDirectory();
 
-DoublyLinkedList playlistQueue;
-
 void MainMenu()
 {
   int option = -1;
@@ -183,6 +181,7 @@ void SongMenu(TreeNode* musicFile)
 {
   int option = -1;
   DoublyLinkedList songQueue;
+  Vector<Playlist*> playlists;
   std::string musicPath = musicFile->path.u8string();
   // convert path to const TCHAR* for use in PlaySound
   std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
@@ -212,11 +211,31 @@ void SongMenu(TreeNode* musicFile)
       PlayingSongMenu(songQueue);
       break;
     case 2:
+      AddSongToPlaylist(playlists);
       break;
     default:
       std::cout << "Invalid input, please try again." << std::endl;
       SongMenu(musicFile);
   }
+}
+
+void AddSongToPlaylist(Vector<Playlist*> playlists)
+{
+  std::cout << "Playlists available:" << std::endl;
+
+  if (playlists.Size() == 0)
+  {
+    std::cout << "No playlists available" << std::endl;
+  }
+
+  for (size_t i = 1; i <= playlists.Size(); i++)
+  {
+    std::string playlistName = "[" + std::to_string(i) + "] " + playlists[i - 1]->name;
+    std::cout << playlistName << std::endl;
+  }
+  std::cout << "[0] Songs Menu" << std::endl;
+  std::cout << "Select option: ";
+  std::cin >> playlistOption;
 }
 
 void PlayingSongMenu(DoublyLinkedList songQueue)
