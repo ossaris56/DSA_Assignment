@@ -144,6 +144,7 @@ void PlayingSongMenu(DoublyLinkedList songQueue)
   switch (option)
   {
     case 0:
+      PlaySound(NULL, 0, 0);
       SongLibraryMenu(GetRootMusicDirectory());
       break;
     case 1:
