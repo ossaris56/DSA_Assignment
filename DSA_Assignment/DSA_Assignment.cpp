@@ -100,9 +100,11 @@ void AllPlaylistsMenu(Vector<Playlist*>* playlists)
   if (option == (playlists->Size() + 1))
   {
     std::cout << std::endl;
-    std::string playlistName;
     std::cout << "Enter name of the new playlist : ";
-    std::cin >> playlistName;
+    std::string playlistName;
+    // Flush cin input buffer so that the program will wait for user input
+    std::cin.ignore();
+    std::getline(std::cin, playlistName);
     Playlist* newPlaylist = new Playlist();
     newPlaylist->name = playlistName;
     newPlaylist->songs = new DoublyLinkedList();
