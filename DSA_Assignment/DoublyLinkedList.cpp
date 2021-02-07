@@ -129,26 +129,32 @@ void DoublyLinkedList::DeleteItem(int index)
 //  size--;
 //}
 
+//Traverse fowards in the list
 void DoublyLinkedList::Forward()
 {
+  //if the next in list is not empty
   if (current->next != NULL)
   {
     current = current->next;
   }
 }
 
+//Traverse backwards in the list
 void DoublyLinkedList::Backward()
 {
+  //if the prev in list is not empty
   if (current->prev != NULL)
   {
     current = current->prev;
   }
 }
 
+//Get node at the index
 LinkedListNode* DoublyLinkedList::Get(int index)
 {
   LinkedListNode* current = front;
   int count = 0;
+  //if list not empty
   while (current != NULL)
   {
     if (count == index) return current;
@@ -157,6 +163,7 @@ LinkedListNode* DoublyLinkedList::Get(int index)
   }
 }
 
+//Print out list
 void DoublyLinkedList::Print()
 {
   LinkedListNode* current = front;
@@ -171,11 +178,13 @@ void DoublyLinkedList::Print()
   }
 }
 
+//Size of list
 int DoublyLinkedList::GetLength()
 {
   return size;
 }
 
+//Current node of list
 LinkedListNode* DoublyLinkedList::GetCurrent()
 {
   return current;
