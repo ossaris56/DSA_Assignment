@@ -1,10 +1,15 @@
 #include "DoublyLinkedList.h";
+DoublyLinkedList ::DoublyLinkedList()
+{
+  front = NULL;
+  end = NULL;
+}
 
 void DoublyLinkedList ::AddFront(std::string d)
 {
   // Creating new node
-  node* temp;
-  temp = new node();
+  LinkedListNode* temp;
+  temp = new LinkedListNode();
   temp->data = d;
   temp->prev = NULL;
   temp->next = front;
@@ -19,10 +24,10 @@ void DoublyLinkedList ::AddFront(std::string d)
   front = temp;
 }
 
-void DoublyLinkedList ::AddBefore(node* n, std::string d)
+void DoublyLinkedList ::AddBefore(LinkedListNode* n, std::string d)
 {
-  node* temp;
-  temp = new node();
+  LinkedListNode* temp;
+  temp = new LinkedListNode();
   temp->data = d;
   temp->next = n;
   temp->prev = n->prev;
@@ -32,10 +37,10 @@ void DoublyLinkedList ::AddBefore(node* n, std::string d)
   if (n->prev == NULL) front = temp;
 }
 
-void DoublyLinkedList ::AddAfter(node* n, std::string d)
+void DoublyLinkedList ::AddAfter(LinkedListNode* n, std::string d)
 {
-  node* temp;
-  temp = new node();
+  LinkedListNode* temp;
+  temp = new LinkedListNode();
   temp->data = d;
   temp->prev = n;
   temp->next = n->next;
@@ -48,8 +53,8 @@ void DoublyLinkedList ::AddAfter(node* n, std::string d)
 void DoublyLinkedList ::AddEnd(std::string d)
 {
   // create new node
-  node* temp;
-  temp = new node();
+  LinkedListNode* temp;
+  temp = new LinkedListNode();
   temp->data = d;
   temp->prev = end;
   temp->next = NULL;
@@ -62,7 +67,7 @@ void DoublyLinkedList ::AddEnd(std::string d)
   end = temp;
 }
 
-void DoublyLinkedList ::DeleteNode(node* n)
+void DoublyLinkedList ::DeleteNode(LinkedListNode* n)
 {
   // if node to be deleted is first node of list
   if (n->prev == NULL)
@@ -89,7 +94,7 @@ void DoublyLinkedList ::DeleteNode(node* n)
 
 void DoublyLinkedList ::ForwardTraverse()
 {
-  node* trav;
+  LinkedListNode* trav;
   trav = front;
   while (trav != NULL)
   {
@@ -100,11 +105,24 @@ void DoublyLinkedList ::ForwardTraverse()
 
 void DoublyLinkedList ::BackwardTraverse()
 {
-  node* trav;
+  LinkedListNode* trav;
   trav = end;
   while (trav != NULL)
   {
     std::cout << trav->data << std::endl;
     trav = trav->prev;
+  }
+}
+
+LinkedListNode* DoublyLinkedList ::get(int index)
+{
+  LinkedListNode* current = front;
+  int count = 0;
+  while (current != NULL)
+  {
+    if (count == index) 
+        return current;
+    count++;
+    current = current->next;
   }
 }
