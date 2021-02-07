@@ -26,6 +26,7 @@ void AddSongToPlaylist(TreeNode* musicFile);
 void AddPlaylist();
 void RemovePlaylist();
 TreeNode* SearchSong(Vector<TreeNode*> directory, std::string input);
+Playlist* SearchPlaylist(Vector<Playlist*>* playlists, std::string input);
 
 namespace SongVariables
 {
@@ -75,16 +76,17 @@ void AllPlaylistsMenu(Vector<Playlist*>* playlists)
     std::cout << "No playlists available" << std::endl;
   }
   std::cout << "[0] Main Menu" << std::endl;
+  std::cout << "[1] Search Playlist" << std::endl;
 
   // Display the names of the playlists
-  for (size_t i = 1; i <= playlists->Size(); i++)
+  for (size_t i = 2; i <= playlists->Size() + 1; i++)
   {
-    std::string playlistName = "[" + std::to_string(i) + "] " + playlists->operator[](i - 1)->name;
+    std::string playlistName = "[" + std::to_string(i) + "] " + playlists->operator[](i - 2)->name;
     std::cout << playlistName << std::endl;
   }
 
-  std::cout << "[" + std::to_string(playlists->Size() + 1) + "] Create Playlist" << std::endl;
-  std::cout << "[" + std::to_string(playlists->Size() + 2) + "] Delete Playlist" << std::endl;
+  std::cout << "[" + std::to_string(playlists->Size() + 2) + "] Create Playlist" << std::endl;
+  std::cout << "[" + std::to_string(playlists->Size() + 3) + "] Delete Playlist" << std::endl;
   std::cout << "Enter option : ";
   std::cin >> option;
 
@@ -95,15 +97,35 @@ void AllPlaylistsMenu(Vector<Playlist*>* playlists)
     return;
   }
 
+  if (option == 1)
+  {
+    std::string playlistName;
+    std::cout << std::endl;
+    std::cout << "Enter Playlist Name : ";
+    std::cin >> playlistName;
+    Playlist* playlist = SearchPlaylist(playlists, playlistName);
+    if (playlist != NULL)
+    {
+      PlaylistMenu(playlist);
+      return;
+    }
+    else
+    {
+      std::cout << "Playlist not found" << std::endl;
+      AllPlaylistsMenu(playlists);
+      return;
+    }
+  }
+
   // If user selects a playlist
   if (option <= playlists->Size())
   {
-    PlaylistMenu(playlists->operator[](option - 1));
+    PlaylistMenu(playlists->operator[](option - 2));
     return;
   }
 
   // Create a new playlist
-  if (option == (playlists->Size() + 1))
+  if (option == (playlists->Size() + 2))
   {
     AddPlaylist();
     AllPlaylistsMenu(SongVariables::playlists);
@@ -111,7 +133,7 @@ void AllPlaylistsMenu(Vector<Playlist*>* playlists)
   }
 
   // Remove an existing playlist
-  if (option == (playlists->Size() + 2))
+  if (option == (playlists->Size() + 3))
   {
     RemovePlaylist();
     return;
@@ -302,6 +324,18 @@ TreeNode* SearchSong(Vector<TreeNode*> directory, std::string input)
     }
   }
 
+  return NULL;
+}
+
+Playlist* SearchPlaylist(Vector<Playlist*>* playlists, std::string input)
+{
+  for (size_t i = 0; i < playlists->Size(); i++)
+  {
+    if (NaiveSearch(input, playlists->operator[](i)->name))
+    {
+      return playlists->operator[](i);
+    }
+  }
   return NULL;
 }
 
