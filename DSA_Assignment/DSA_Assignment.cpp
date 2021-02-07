@@ -9,25 +9,31 @@
 #include <string>
 #include "tree/DirectoryTree.h"
 #include "DoublyLinkedList.h"
+#include "Playlist.h"
 
 namespace fs = std::filesystem;
 
+// Function prototypes
 void MainMenu();
 void SongMenu(TreeNode* musicFile);
 void SongLibraryMenu(Vector<TreeNode*> directory);
 void PlayingSongMenu(DoublyLinkedList songQueue);
+void AllPlaylistsMenu(Vector<Playlist*> playlists);
+void PlaylistMenu(Playlist* playlist);
 Vector<TreeNode*> GetRootMusicDirectory();
 
 void MainMenu()
 {
   int option = -1;
   Vector<TreeNode*> rootMusicDirectory = GetRootMusicDirectory();
+  static Vector<Playlist*> playlists;
   while (option != 0)
   {
-    std::cout << "\nMusic Player" << std::endl;
+    std::cout << std::endl;
+    std::cout << "Music Player" << std::endl;
     std::cout << "==========================" << std::endl;
     std::cout << "[1] View song library" << std::endl;
-    std::cout << "[2] View playlist" << std::endl;
+    std::cout << "[2] View playlists" << std::endl;
     std::cout << "[3] Organize songs" << std::endl;
     std::cout << "[4] Search" << std::endl;
     std::cout << "[0] Exit" << std::endl;
@@ -41,19 +47,67 @@ void MainMenu()
         SongLibraryMenu(rootMusicDirectory);
         break;
       case 2:
-        // std::cout << "\nPlaylist" << std::endl;
-        // std::cout << "==========================" << std::endl;
-        //// Display list of songs in playlist
-        // std::cout << "[0] Main Menu" << std::endl;
-        // std::cout << "Select Music: ";
-        // std::cin >> musicOption;
-        // SongMenu(musicOption);
+        AllPlaylistsMenu(playlists);
         break;
       default:
         std::cout << "Invalid input, please try again" << std::endl;
         break;
     }
   }
+}
+
+void AllPlaylistsMenu(Vector<Playlist*> playlists)
+{
+  int option = -1;
+  std::cout << std::endl;
+  if (playlists.Size() == 0)
+  {
+    std::cout << "No playlists available" << std::endl;
+  }
+  std::cout << "[0] Main Menu" << std::endl;
+
+  // Display the names of the playlists
+  for (size_t i = 1; i <= playlists.Size(); i++)
+  {
+    std::string playlistName = "[" + std::to_string(i) + "] " + playlists[i - 1]->name;
+    std::cout << playlistName << std::endl;
+  }
+
+  std::cout << "[" + std::to_string(playlists.Size() + 1) + "] Create Playlist" << std::endl;
+  std::cout << "[" + std::to_string(playlists.Size() + 2) + "] Delete Playlist" << std::endl;
+  std::cout << "Enter option : ";
+  std::cin >> option;
+
+  // If user wants to exit
+  if (option == 0)
+  {
+    MainMenu();
+  }
+
+  // If user selects a playlist
+  if (option <= playlists.Size())
+  {
+    PlaylistMenu(playlists[option]);
+  }
+
+  if (option == (playlists.Size() + 1))
+  {
+    std::cout << std::endl;
+    std::string playlistName;
+    std::cout << "Enter name of the new playlist : ";
+    std::cin >> playlistName;
+    Playlist* newPlaylist = new Playlist();
+    newPlaylist->name = playlistName;
+    newPlaylist->songs = new DoublyLinkedList();
+    newPlaylist->currentIndex = 0;
+    playlists.PushBack(newPlaylist);
+    std::cout << "Successfully added " << playlistName << std::endl;
+    AllPlaylistsMenu(playlists);
+  }
+}
+
+void PlaylistMenu(Playlist* playlist)
+{
 }
 
 void SongLibraryMenu(Vector<TreeNode*> directory)
@@ -117,6 +171,7 @@ void SongMenu(TreeNode* musicFile)
   {
     case 0:
       SongLibraryMenu(musicFile->parent->children);
+      break;
     case 1:
       songQueue.AddEnd(musicPath);
       PlaySound(constTcharMusicPath, NULL,
@@ -144,12 +199,15 @@ void PlayingSongMenu(DoublyLinkedList songQueue)
   switch (option)
   {
     case 0:
+      // Stop playing song
       PlaySound(NULL, 0, 0);
       SongLibraryMenu(GetRootMusicDirectory());
       break;  //
     case 1:   //
     {
+      // Stop playing song
       PlaySound(NULL, 0, 0);
+      // Convert music path to const TCHAR* for use in PlaySound()
       std::string musicPath = songQueue.Get(currentSongIndex)->data;
       std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
       const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
