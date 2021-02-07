@@ -25,6 +25,7 @@ void AddSongToPlaylist(TreeNode* musicFile);
 void AddPlaylist();
 void RemovePlaylist();
 void SearchSong(Vector<TreeNode*> directory);
+void RemoveSongFromPlaylist(Playlist* playlist);
 
 namespace SongVariables
 {
@@ -191,6 +192,7 @@ void AddPlaylist()
 void PlaylistMenu(Playlist* playlist)
 {
   int option = -1;
+  std::cout << std::endl;
   std::cout << playlist->name << std::endl;
   std::cout << "==========================" << std::endl;
   std::cout << "[0] Main Menu" << std::endl;
@@ -215,7 +217,7 @@ void PlaylistMenu(Playlist* playlist)
   }
   if (option == 1)
   {
-    std::cout << "remove song" << std::endl;
+    RemoveSongFromPlaylist(playlist);
   }
   if (option < 0 || option > playlist->songs->GetLength())
   {
@@ -320,9 +322,41 @@ void SongMenu(TreeNode* musicFile)
   }
 }
 
-void RemoveSongFromPlaylist(DoublyLinkedList songQueue)
+void RemoveSongFromPlaylist(Playlist* playlist)
 {
-    
+  int option = -1;
+  std::cout << std::endl;
+  std::cout << "Remove Song" << std::endl;
+  std::cout << "==========================" << std::endl;
+  for (size_t i = 1; i <= (playlist->songs->GetLength() + 1); i++)
+  {
+    std::string songName =
+        "[" + std::to_string(i) + "] " + playlist->songs->Get(i - 2)->data.filename().u8string();
+    std::cout << songName << std::endl;
+  }
+  if (playlist->songs->GetLength() < 0)
+  {
+    std::cout << "No songs in this playlist to remove!" << std::endl;
+  }
+  std::cout << "[0] Playlist Menu" << std::endl;
+  std::cout << "Select option: ";
+  std::cin >> option;
+  //if (option == 0)
+  //{
+  //  PlaylistMenu(playlist);
+  //}
+  //if (option < 0 || option > playlist->songs->GetLength())
+  //{
+  //  std::cout << "Invalid option, please try again." << std::endl;
+  //  RemoveSongFromPlaylist(playlist);
+  //}
+  //else
+  //{
+  //  playlist->songs->DeleteNode(playlist->songs->Get(option - 1));
+  //  std::cout << playlist->songs->Get(option - 1)->data << " has been removed from "
+  //            << playlist->name << std::endl;
+  //}
+  //PlaylistMenu(playlist);
 }
 
 void AddSongToPlaylist(TreeNode* musicFile)
@@ -337,7 +371,8 @@ void AddSongToPlaylist(TreeNode* musicFile)
   }
   else
   {
-    std::cout << "Playlists :" << std::endl;
+    std::cout << "Playlists" << std::endl;
+    std::cout << "==========================" << std::endl;
   }
   std::cout << "[0] Songs Menu" << std::endl;
   std::cout << "[1] Add playlist" << std::endl;
