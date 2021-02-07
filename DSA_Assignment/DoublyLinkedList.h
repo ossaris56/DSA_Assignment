@@ -13,6 +13,7 @@ class DoublyLinkedList
 {
   LinkedListNode* front;  // points to first node of list
   LinkedListNode* end;    // points to first las of list
+  int size;
 
  public:
   DoublyLinkedList();
@@ -24,4 +25,6 @@ class DoublyLinkedList
   void ForwardTraverse();
   void BackwardTraverse();
   LinkedListNode* Get(int index);
+  void print();
+  int getLength();
 };

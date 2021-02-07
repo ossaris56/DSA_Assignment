@@ -18,6 +18,8 @@ void SongLibraryMenu(Vector<TreeNode*> directory);
 void PlayingSongMenu(DoublyLinkedList songQueue);
 Vector<TreeNode*> GetRootMusicDirectory();
 
+DoublyLinkedList playlistQueue;
+
 void MainMenu()
 {
   int option = -1;
@@ -41,13 +43,6 @@ void MainMenu()
         SongLibraryMenu(rootMusicDirectory);
         break;
       case 2:
-        // std::cout << "\nPlaylist" << std::endl;
-        // std::cout << "==========================" << std::endl;
-        //// Display list of songs in playlist
-        // std::cout << "[0] Main Menu" << std::endl;
-        // std::cout << "Select Music: ";
-        // std::cin >> musicOption;
-        // SongMenu(musicOption);
         break;
       default:
         std::cout << "Invalid input, please try again" << std::endl;
@@ -139,6 +134,7 @@ void PlayingSongMenu(DoublyLinkedList songQueue)
   std::cout << "[1] Replay" << std::endl;
   std::cout << "[2] Next" << std::endl;
   std::cout << "[3] Previous" << std::endl;
+  std::cout << "Select Option:";
   std::cin >> option;
 
   switch (option)

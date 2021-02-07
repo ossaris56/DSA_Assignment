@@ -3,6 +3,7 @@ DoublyLinkedList ::DoublyLinkedList()
 {
   front = NULL;
   end = NULL;
+  size = 0;
 }
 
 void DoublyLinkedList ::AddFront(std::string d)
@@ -22,6 +23,7 @@ void DoublyLinkedList ::AddFront(std::string d)
     front->prev = temp;
 
   front = temp;
+  size++;
 }
 
 void DoublyLinkedList ::AddBefore(LinkedListNode* n, std::string d)
@@ -35,6 +37,7 @@ void DoublyLinkedList ::AddBefore(LinkedListNode* n, std::string d)
 
   // if node is to be inserted before first node
   if (n->prev == NULL) front = temp;
+  size++;
 }
 
 void DoublyLinkedList ::AddAfter(LinkedListNode* n, std::string d)
@@ -48,6 +51,7 @@ void DoublyLinkedList ::AddAfter(LinkedListNode* n, std::string d)
 
   // if node is to be inserted after last node
   if (n->next == NULL) end = temp;
+  size++;
 }
 
 void DoublyLinkedList ::AddEnd(std::string d)
@@ -65,6 +69,7 @@ void DoublyLinkedList ::AddEnd(std::string d)
   else
     end->next = temp;
   end = temp;
+  size++;
 }
 
 void DoublyLinkedList ::DeleteNode(LinkedListNode* n)
@@ -90,6 +95,7 @@ void DoublyLinkedList ::DeleteNode(LinkedListNode* n)
   }
   // delete node
   delete (n);
+  size--;
 }
 
 void DoublyLinkedList ::ForwardTraverse()
@@ -124,4 +130,23 @@ LinkedListNode* DoublyLinkedList ::Get(int index)
     count++;
     current = current->next;
   }
+}
+
+void DoublyLinkedList::print()
+{
+  LinkedListNode* current = front;
+  int i = 1;
+
+  while (current != NULL)
+  {
+    std::cout << "[" << i << "] ";
+    std::cout << current->data << std::endl;
+    current = current->next;
+    i += 1;
+  }
+}
+
+int DoublyLinkedList::getLength()
+{
+  return size;
 }
