@@ -25,11 +25,12 @@ class DoublyLinkedList
   void AddAfter(LinkedListNode* n, fs::path s);
   void AddBefore(LinkedListNode* n, fs::path s);
   void AddEnd(fs::path s);
-  void DeleteNode(LinkedListNode* n);
+  /*void DeleteNode(LinkedListNode* n);*/
   void Forward();
   void Backward();
   LinkedListNode* Get(int index);
   void Print();
   int GetLength();
   LinkedListNode* GetCurrent();
+  void DeleteItem(int index);
 };

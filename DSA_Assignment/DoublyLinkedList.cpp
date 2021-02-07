@@ -80,31 +80,54 @@ void DoublyLinkedList::AddEnd(fs::path d)
   size++;
 }
 
-void DoublyLinkedList::DeleteNode(LinkedListNode* n)
+void DoublyLinkedList::DeleteItem(int index)
 {
-  // if node to be deleted is first node of list
-  if (n->prev == NULL)
+  if (index >= 0 && index < size)
   {
-    front = n->next;  // the next node will be front of list
-    front->prev = NULL;
+    // removing first element
+    if (index == 0)
+    {
+      front = front->next;
+    }
+    // removing from somewhere else in the list
+    else
+    {
+      LinkedListNode* current = front;
+      for (int i = 0; i < index - 1; i++)
+      {
+        current = current->next;
+      }
+      current->next = current->next->next;
+    }
+    size--;
   }
-  // if node to be deleted is last node of list
-  else if (n->next == NULL)
-  {
-    end = n->prev;  // the previous node will be last of list
-    end->next = NULL;
-  }
-  else
-  {
-    // previous node's next will point to current node's next
-    n->prev->next = n->next;
-    // next node's prev will point to current node's prev
-    n->next->prev = n->prev;
-  }
-  // delete node
-  delete (n);
-  size--;
 }
+
+//void DoublyLinkedList::DeleteNode(LinkedListNode* n)
+//{
+//  // if node to be deleted is first node of list
+//  if (n->prev == NULL)
+//  {
+//    front = n->next;  // the next node will be front of list
+//    front->prev = NULL;
+//  }
+//  // if node to be deleted is last node of list
+//  else if (n->next == NULL)
+//  {
+//    end = n->prev;  // the previous node will be last of list
+//    end->next = NULL;
+//  }
+//  else
+//  {
+//    // previous node's next will point to current node's next
+//    n->prev->next = n->next;
+//    // next node's prev will point to current node's prev
+//    n->next->prev = n->prev;
+//  }
+//  // delete node
+//  delete (n);
+//  size--;
+//}
 
 void DoublyLinkedList::Forward()
 {
@@ -142,7 +165,7 @@ void DoublyLinkedList::Print()
   while (current != NULL)
   {
     std::cout << "[" << i << "] ";
-    std::cout << current->data << std::endl;
+    std::cout << current->data.filename().u8string() << std::endl;
     current = current->next;
     i += 1;
   }

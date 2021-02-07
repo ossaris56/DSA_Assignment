@@ -119,7 +119,7 @@ void AllPlaylistsMenu(Vector<Playlist*>* playlists)
   }
 
   // If user selects a playlist
-  if (option <= playlists->Size())
+  if (option <= playlists->Size() + 1)
   {
     PlaylistMenu(playlists->operator[](option - 2));
     return;
@@ -399,35 +399,30 @@ void RemoveSongFromPlaylist(Playlist* playlist)
   std::cout << std::endl;
   std::cout << "Remove Song" << std::endl;
   std::cout << "==========================" << std::endl;
-  for (size_t i = 1; i <= (playlist->songs->GetLength() + 1); i++)
-  {
-    std::string songName =
-        "[" + std::to_string(i) + "] " + playlist->songs->Get(i - 2)->data.filename().u8string();
-    std::cout << songName << std::endl;
-  }
-  if (playlist->songs->GetLength() < 0)
+  playlist->songs->Print();
+  if (playlist->songs->GetLength()-1 < 0)
   {
     std::cout << "No songs in this playlist to remove!" << std::endl;
   }
   std::cout << "[0] Playlist Menu" << std::endl;
   std::cout << "Select option: ";
   std::cin >> option;
-  //if (option == 0)
-  //{
-  //  PlaylistMenu(playlist);
-  //}
-  //if (option < 0 || option > playlist->songs->GetLength())
-  //{
-  //  std::cout << "Invalid option, please try again." << std::endl;
-  //  RemoveSongFromPlaylist(playlist);
-  //}
-  //else
-  //{
-  //  playlist->songs->DeleteNode(playlist->songs->Get(option - 1));
-  //  std::cout << playlist->songs->Get(option - 1)->data << " has been removed from "
-  //            << playlist->name << std::endl;
-  //}
-  //PlaylistMenu(playlist);
+  if (option == 0)
+  {
+    PlaylistMenu(playlist);
+  }
+  if (option < 0 || option > playlist->songs->GetLength())
+  {
+    std::cout << "Invalid option, please try again." << std::endl;
+    RemoveSongFromPlaylist(playlist);
+  }
+  else
+  {
+    std::cout << playlist->songs->Get(option - 1)->data.filename().u8string()
+              << " has been removed from " << playlist->name << std::endl;
+    playlist->songs->DeleteItem(option-1);
+  }
+  PlaylistMenu(playlist);
 }
 
 void AddSongToPlaylist(TreeNode* musicFile)
