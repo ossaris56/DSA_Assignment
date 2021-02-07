@@ -21,7 +21,9 @@ void PlayingSongMenu(DoublyLinkedList songQueue);
 void AllPlaylistsMenu(Vector<Playlist*>* playlists);
 void PlaylistMenu(Playlist* playlist);
 Vector<TreeNode*> GetRootMusicDirectory();
-void AddSongToPlaylist(Vector<Playlist*>* playlists, TreeNode* musicFile);
+void AddSongToPlaylist(TreeNode* musicFile);
+void AddPlaylist();
+void RemovePlaylist();
 
 namespace SongVariables
 {
@@ -32,7 +34,7 @@ void MainMenu()
 {
   int option = -1;
   Vector<TreeNode*> rootMusicDirectory = GetRootMusicDirectory();
-  // static Vector<Playlist*>* playlists = new Vector<Playlist*>;
+
   while (option != 0)
   {
     std::cout << std::endl;
@@ -99,51 +101,68 @@ void AllPlaylistsMenu(Vector<Playlist*>* playlists)
   // Create a new playlist
   if (option == (playlists->Size() + 1))
   {
-    std::cout << std::endl;
-    std::cout << "Enter name of the new playlist : ";
-    std::string playlistName;
-    // Flush cin input buffer so that the program will wait for user input
-    std::cin.ignore();
-    std::getline(std::cin, playlistName);
-    Playlist* newPlaylist = new Playlist();
-    newPlaylist->name = playlistName;
-    newPlaylist->songs = new DoublyLinkedList();
-    newPlaylist->currentIndex = 0;
-    playlists->PushBack(newPlaylist);
-    std::cout << "Successfully added " << playlistName << std::endl;
-    AllPlaylistsMenu(playlists);
+    AddPlaylist();
   }
 
   // Remove an existing playlist
   if (option == (playlists->Size() + 2))
   {
-    int removeOption = -1;
-    std::cout << std::endl;
-    std::cout << "Select a playlist to remove" << std::endl;
-    std::cout << "===============================" << std::endl;
-    std::cout << "[0] Back" << std::endl;
-    // Display the names of the playlists
-    for (size_t i = 1; i <= playlists->Size(); i++)
-    {
-      std::string playlistName =
-          "[" + std::to_string(i) + "] " + playlists->operator[](i - 1)->name;
-      std::cout << playlistName << std::endl;
-    }
-
-    std::cin >> removeOption;
-
-    // TODO :: add checks when < 0 and > playlists.size()
-    if (removeOption == 0)
-    {
-      AllPlaylistsMenu(playlists);
-    }
-    if (removeOption <= playlists->Size())
-    {
-      std::cout << "Removing " << playlists->operator[](removeOption - 1)->name << std::endl;
-      playlists->RemoveAt(removeOption - 1);
-      AllPlaylistsMenu(playlists);
-    }
+    RemovePlaylist();
   }
+}
+
+void RemovePlaylist()
+{
+  int option = -1;
+  Vector<Playlist*>* playlists = SongVariables::playlists;
+  std::cout << std::endl;
+
+  if (playlists->Size() <= 0)
+  {
+    std::cout << "No playlists available" << std::endl;
+    AllPlaylistsMenu(playlists);
+  }
+  std::cout << "Select a playlist to remove" << std::endl;
+  std::cout << "===============================" << std::endl;
+  std::cout << "[0] Back" << std::endl;
+  // Display the names of the playlists
+  for (size_t i = 1; i <= playlists->Size(); i++)
+  {
+    std::string playlistName = "[" + std::to_string(i) + "] " + playlists->operator[](i - 1)->name;
+    std::cout << playlistName << std::endl;
+  }
+
+  std::cout << "Enter Option : ";
+  std::cin >> option;
+
+  // TODO :: add checks when < 0 and > playlists.size()
+  if (option == 0)
+  {
+    AllPlaylistsMenu(playlists);
+  }
+  if (option <= playlists->Size())
+  {
+    std::cout << "Removing " << playlists->operator[](option - 1)->name << std::endl;
+    playlists->RemoveAt(option - 1);
+    AllPlaylistsMenu(playlists);
+  }
+}
+
+void AddPlaylist()
+{
+  std::cout << std::endl;
+  std::cout << "Enter name of the new playlist : ";
+  std::string playlistName;
+  // Flush cin input buffer so that the program will wait for user input
+  std::cin.ignore();
+  std::getline(std::cin, playlistName);
+  Playlist* newPlaylist = new Playlist();
+  newPlaylist->name = playlistName;
+  newPlaylist->songs = new DoublyLinkedList();
+  newPlaylist->currentIndex = 0;
+  SongVariables::playlists->PushBack(newPlaylist);
+  std::cout << "Successfully added " << playlistName << std::endl;
+  AllPlaylistsMenu(SongVariables::playlists);
 }
 
 void PlaylistMenu(Playlist* playlist)
@@ -210,7 +229,7 @@ void SongMenu(TreeNode* musicFile)
   switch (option)
   {
     case 0:
-      SongLibraryMenu(musicFile->parent->children);
+      SongLibraryMenu(GetRootMusicDirectory());
       break;
     case 1:
       songQueue.AddEnd(musicPath);
@@ -219,7 +238,7 @@ void SongMenu(TreeNode* musicFile)
       PlayingSongMenu(songQueue);
       break;
     case 2:
-      AddSongToPlaylist(SongVariables::playlists, musicFile);
+      AddSongToPlaylist(musicFile);
       break;
     default:
       std::cout << "Invalid input, please try again." << std::endl;
@@ -227,54 +246,51 @@ void SongMenu(TreeNode* musicFile)
   }
 }
 
-void AddSongToPlaylist(Vector<Playlist*>* playlists, TreeNode* musicFile)
+void AddSongToPlaylist(TreeNode* musicFile)
 {
   int playlistOption = -1;
-  std::cout << "Playlists available:" << std::endl;
+  Vector<Playlist*>* playlists = SongVariables::playlists;
 
   if (playlists->Size() == 0)
   {
     std::cout << "No playlists available" << std::endl;
   }
+  else
+  {
+    std::cout << "Playlists available:" << std::endl;
+  }
   std::cout << "[0] Songs Menu" << std::endl;
   std::cout << "[1] Add playlist" << std::endl;
-  for (size_t i = 2; i <= playlists->Size(); i++)
+  for (size_t i = 2; i <= (playlists->Size() + 1); i++)
   {
-    std::string playlistName = "[" + std::to_string(i) + "] " + playlists->operator[](i - 1)->name;
+    std::string playlistName = "[" + std::to_string(i) + "] " + playlists->operator[](i - 2)->name;
     std::cout << playlistName << std::endl;
   }
   std::cout << "Select option: ";
   std::cin >> playlistOption;
 
-  if (playlistOption == 0) 
+  if (playlistOption == 0)
   {
     SongMenu(musicFile);
   }
   if (playlistOption == 1)
   {
-      std::cout << std::endl;
-      std::string playlistName;
-      std::cout << "Enter name of the new playlist : ";
-      std::cin >> playlistName;
-      Playlist* newPlaylist = new Playlist();
-      newPlaylist->name = playlistName;
-      newPlaylist->songs = new DoublyLinkedList();
-      newPlaylist->currentIndex = 0;
-      playlists->PushBack(newPlaylist);
-      std::cout << "New Playlist '" << playlistName << "' successfully added" << std::endl;
-      std::cout << musicFile->path.stem() << " successfully added into " << playlistName << std::endl;
-      SongMenu(musicFile);
+    std::cout << std::endl;
+    AddPlaylist();
+    SongMenu(musicFile);
   }
-  else if (playlistOption < 0 || playlistOption > playlists->Size()) 
+  else if (playlistOption < 0 || playlistOption > playlists->Size() + 1)
   {
     std::cout << "Invaild input, please try again." << std::endl;
-    AddSongToPlaylist(playlists, musicFile);
+    AddSongToPlaylist(musicFile);
   }
   else
   {
     std::string musicFileString = musicFile->path.u8string();
-    playlists->operator[](playlistOption - 1)->songs->AddEnd(musicFileString);
-    std::cout << musicFile->path.stem() << " successfully added into " << playlists->operator[](playlistOption - 1)->name << std::endl;
+    playlists->operator[](playlistOption - 2)->songs->AddEnd(musicFileString);
+    std::cout << musicFile->path.stem() << " successfully added into "
+              << playlists->operator[](playlistOption - 2)->name << std::endl;
+    SongMenu(musicFile);
   }
 }
 
