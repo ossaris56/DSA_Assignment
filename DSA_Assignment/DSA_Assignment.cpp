@@ -465,46 +465,65 @@ void PlayingSongMenu(DoublyLinkedList* songQueue)
   std::cout << "Select Option:";
   std::cin >> option;
 
-  switch (option)
+  if (songQueue->GetLength() > 1)
   {
-    case 0:
-      // Stop playing song
-      PlaySound(NULL, 0, 0);
-      SongLibraryMenu(GetRootMusicDirectory());
-      return;
-    case 1:  //
+    if (option < 0 || option > 3)
     {
-      // Stop playing song
+      std::cout << "Invalid input, please try again" << std::endl;
+      PlayingSongMenu(songQueue);
+      return;
+    }
+  }
+  else
+  {
+    if (option < 0 || option > 1)
+    {
+      std::cout << "Invalid input, please try again" << std::endl;
+      PlayingSongMenu(songQueue);
+      return;
+    }
+  }
+  if (option == 0)
+  {
+    // Stop playing song
+    PlaySound(NULL, 0, 0);
+    SongLibraryMenu(GetRootMusicDirectory());
+    return;
+  }
+  if (option == 1)
+  {
+    // Stop playing song
+    PlaySound(NULL, 0, 0);
+    // Replay song
+    PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
+    PlayingSongMenu(songQueue);
+    return;
+  }
+  if (songQueue->GetLength() > 1)
+  {
+    if (option == 2)
+    {
+      // Play next song in queue
       PlaySound(NULL, 0, 0);
+      songQueue->Forward();
+      std::string musicPath = songQueue->GetCurrent()->data.u8string();
+      std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
+      const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
       PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
       PlayingSongMenu(songQueue);
       return;
     }
-      if (songQueue->GetLength() > 1)
-      {
-        case 2:
-        {
-          PlaySound(NULL, 0, 0);
-          songQueue->Forward();
-          std::string musicPath = songQueue->GetCurrent()->data.u8string();
-          std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
-          const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
-          PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
-          PlayingSongMenu(songQueue);
-          return;
-        }
-        case 3:
-        {
-          PlaySound(NULL, 0, 0);
-          songQueue->Backward();
-          std::string musicPath = songQueue->GetCurrent()->data.u8string();
-          std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
-          const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
-          PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
-          PlayingSongMenu(songQueue);
-          return;
-        }
-      }
+    if (option == 3)
+    {
+      PlaySound(NULL, 0, 0);
+      songQueue->Backward();
+      std::string musicPath = songQueue->GetCurrent()->data.u8string();
+      std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
+      const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
+      PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
+      PlayingSongMenu(songQueue);
+      return;
+    }
   }
 }
 
