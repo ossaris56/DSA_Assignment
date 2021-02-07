@@ -114,14 +114,13 @@ void DoublyLinkedList ::BackwardTraverse()
   }
 }
 
-LinkedListNode* DoublyLinkedList ::get(int index)
+LinkedListNode* DoublyLinkedList ::Get(int index)
 {
   LinkedListNode* current = front;
   int count = 0;
   while (current != NULL)
   {
-    if (count == index) 
-        return current;
+    if (count == index) return current;
     count++;
     current = current->next;
   }

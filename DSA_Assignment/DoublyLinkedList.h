@@ -2,10 +2,9 @@
 #include <iostream>
 #include <string>
 
-
 struct LinkedListNode
 {
-  std::string data;  // Data
+  std::string data;      // Data
   LinkedListNode* prev;  // A reference to the previous node
   LinkedListNode* next;  // A reference to the next node
 };
@@ -14,8 +13,8 @@ class DoublyLinkedList
 {
   LinkedListNode* front;  // points to first node of list
   LinkedListNode* end;    // points to first las of list
- 
-public:
+
+ public:
   DoublyLinkedList();
   void AddFront(std::string s);
   void AddAfter(LinkedListNode* n, std::string s);
@@ -24,5 +23,5 @@ public:
   void DeleteNode(LinkedListNode* n);
   void ForwardTraverse();
   void BackwardTraverse();
-  LinkedListNode* get(int index);
+  LinkedListNode* Get(int index);
 };

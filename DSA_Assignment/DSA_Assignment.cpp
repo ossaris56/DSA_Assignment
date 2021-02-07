@@ -134,7 +134,7 @@ void SongMenu(TreeNode* musicFile)
 void PlayingSongMenu(DoublyLinkedList songQueue)
 {
   int option = -1;
-  int currentSongIndex = 0;
+  static int currentSongIndex = 0;
   std::cout << "[0] Stop and Exit" << std::endl;
   std::cout << "[1] Replay" << std::endl;
   std::cout << "[2] Next" << std::endl;
@@ -146,13 +146,17 @@ void PlayingSongMenu(DoublyLinkedList songQueue)
     case 0:
       PlaySound(NULL, 0, 0);
       SongLibraryMenu(GetRootMusicDirectory());
-      break;
-    case 1:
-      // TODO: remove comment when at is implemented in doubly linked list
-      // PlaySound(NULL, 0, 0);
-      // PlaySound((const TCHAR*)songQueue.At(currentSongIndex).c_str(), 0, 0);
+      break;  //
+    case 1:   //
+    {
+      PlaySound(NULL, 0, 0);
+      std::string musicPath = songQueue.Get(currentSongIndex)->data;
+      std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
+      const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
+      PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
       PlayingSongMenu(songQueue);
       break;
+    }
     case 2:
       PlayingSongMenu(songQueue);
       break;
