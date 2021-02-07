@@ -282,6 +282,11 @@ void PlayingSongMenu(DoublyLinkedList songQueue)
 {
   int option = -1;
   static int currentSongIndex = 0;
+  // Convert music path to const TCHAR* for use in PlaySound()
+  std::string musicPath = songQueue.GetCurrent()->data;
+  std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
+  const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
+
   std::cout << "[0] Stop and Exit" << std::endl;
   std::cout << "[1] Replay" << std::endl;
   std::cout << "[2] Next" << std::endl;
@@ -300,20 +305,32 @@ void PlayingSongMenu(DoublyLinkedList songQueue)
     {
       // Stop playing song
       PlaySound(NULL, 0, 0);
-      // Convert music path to const TCHAR* for use in PlaySound()
-      std::string musicPath = songQueue.Get(currentSongIndex)->data;
+      PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
+      PlayingSongMenu(songQueue);
+      break;
+    }
+    case 2:
+    {
+      PlaySound(NULL, 0, 0);
+      songQueue.Forward();
+      std::string musicPath = songQueue.GetCurrent()->data;
       std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
       const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
       PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
       PlayingSongMenu(songQueue);
       break;
     }
-    case 2:
-      PlayingSongMenu(songQueue);
-      break;
     case 3:
+    {
+      PlaySound(NULL, 0, 0);
+      songQueue.Backward();
+      std::string musicPath = songQueue.GetCurrent()->data;
+      std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
+      const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
+      PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
       PlayingSongMenu(songQueue);
       break;
+    }
   }
 }
 

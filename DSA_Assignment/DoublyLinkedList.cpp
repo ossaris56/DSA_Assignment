@@ -3,6 +3,7 @@ DoublyLinkedList::DoublyLinkedList()
 {
   front = NULL;
   end = NULL;
+  current = NULL;
   size = 0;
 }
 
@@ -17,7 +18,10 @@ void DoublyLinkedList::AddFront(std::string d)
 
   // List is empty
   if (front == NULL)
+  {
     end = temp;
+    current = temp;
+  }
 
   else
     front->prev = temp;
@@ -65,7 +69,11 @@ void DoublyLinkedList::AddEnd(std::string d)
 
   // if list is empty
   if (end == NULL)
+  {
     front = temp;
+    current = temp;
+  }
+    
   else
     end->next = temp;
   end = temp;
@@ -98,25 +106,19 @@ void DoublyLinkedList::DeleteNode(LinkedListNode* n)
   size--;
 }
 
-void DoublyLinkedList::ForwardTraverse()
+void DoublyLinkedList::Forward()
 {
-  LinkedListNode* trav;
-  trav = front;
-  while (trav != NULL)
+  if (current->next != NULL)
   {
-    std::cout << trav->data << std::endl;
-    trav = trav->next;
+    current = current->next;
   }
 }
 
-void DoublyLinkedList::BackwardTraverse()
+void DoublyLinkedList::Backward()
 {
-  LinkedListNode* trav;
-  trav = end;
-  while (trav != NULL)
+  if (current->prev != NULL)
   {
-    std::cout << trav->data << std::endl;
-    trav = trav->prev;
+    current = current->prev;
   }
 }
 
@@ -149,4 +151,9 @@ void DoublyLinkedList::Print()
 int DoublyLinkedList::GetLength()
 {
   return size;
+}
+
+LinkedListNode* DoublyLinkedList::GetCurrent()
+{
+  return current;
 }

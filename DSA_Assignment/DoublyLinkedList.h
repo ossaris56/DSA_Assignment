@@ -13,6 +13,7 @@ class DoublyLinkedList
 {
   LinkedListNode* front;  // points to first node of list
   LinkedListNode* end;    // points to first las of list
+  LinkedListNode* current;
   int size;
 
  public:
@@ -22,9 +23,10 @@ class DoublyLinkedList
   void AddBefore(LinkedListNode* n, std::string s);
   void AddEnd(std::string s);
   void DeleteNode(LinkedListNode* n);
-  void ForwardTraverse();
-  void BackwardTraverse();
+  void Forward();
+  void Backward();
   LinkedListNode* Get(int index);
   void Print();
   int GetLength();
+  LinkedListNode* GetCurrent();
 };
