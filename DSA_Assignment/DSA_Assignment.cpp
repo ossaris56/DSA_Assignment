@@ -90,6 +90,7 @@ void AllPlaylistsMenu(Vector<Playlist*> playlists)
     PlaylistMenu(playlists[option]);
   }
 
+  // Create a new playlist
   if (option == (playlists.Size() + 1))
   {
     std::cout << std::endl;
@@ -103,6 +104,36 @@ void AllPlaylistsMenu(Vector<Playlist*> playlists)
     playlists.PushBack(newPlaylist);
     std::cout << "Successfully added " << playlistName << std::endl;
     AllPlaylistsMenu(playlists);
+  }
+
+  // Remove an existing playlist
+  if (option == (playlists.Size() + 2))
+  {
+    int removeOption = -1;
+    std::cout << std::endl;
+    std::cout << "Select a playlist to remove" << std::endl;
+    std::cout << "===============================" << std::endl;
+    std::cout << "[0] Back" << std::endl;
+    // Display the names of the playlists
+    for (size_t i = 1; i <= playlists.Size(); i++)
+    {
+      std::string playlistName = "[" + std::to_string(i) + "] " + playlists[i - 1]->name;
+      std::cout << playlistName << std::endl;
+    }
+
+    std::cin >> removeOption;
+
+    // TODO :: add checks when < 0 and > playlists.size()
+    if (removeOption == 0)
+    {
+      AllPlaylistsMenu(playlists);
+    }
+    if (removeOption <= playlists.Size())
+    {
+      std::cout << "Removing " << playlists[removeOption - 1]->name << std::endl;
+      playlists.RemoveAt(removeOption - 1);
+      AllPlaylistsMenu(playlists);
+    }
   }
 }
 
