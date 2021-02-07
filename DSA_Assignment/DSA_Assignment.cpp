@@ -10,6 +10,7 @@
 #include "tree/DirectoryTree.h"
 #include "DoublyLinkedList.h"
 #include "Playlist.h"
+#include "NaiveSearch.h"
 
 namespace fs = std::filesystem;
 
@@ -24,8 +25,8 @@ Vector<TreeNode*> GetRootMusicDirectory();
 void AddSongToPlaylist(TreeNode* musicFile);
 void AddPlaylist();
 void RemovePlaylist();
-void SearchSong(Vector<TreeNode*> directory);
-void RemoveSongFromPlaylist(Playlist* playlist);
+TreeNode* SearchSong(Vector<TreeNode*> directory, std::string input);
+Playlist* SearchPlaylist(Vector<Playlist*>* playlists, std::string input);
 
 namespace SongVariables
 {
@@ -44,7 +45,6 @@ void MainMenu()
     std::cout << "==========================" << std::endl;
     std::cout << "[1] View song library" << std::endl;
     std::cout << "[2] View playlists" << std::endl;
-    std::cout << "[3] Search Songs" << std::endl;
     std::cout << "[0] Exit" << std::endl;
     std::cout << "Enter option: ";
     std::cin >> option;
@@ -54,37 +54,16 @@ void MainMenu()
         return;
       case 1:
         SongLibraryMenu(rootMusicDirectory);
-        break;
+        return;
       case 2:
         AllPlaylistsMenu(SongVariables::playlists);
-        break;
-      case 3:
-        break;
-      case 4:
-        /*SearchSong(rootMusicDirectory);*/
-        break;
+        return;
       default:
         std::cout << "Invalid input, please try again" << std::endl;
         break;
     }
   }
 }
-
-// void SearchSong(Vector<TreeNode*> directory)
-//{
-//  Vector<std::string> dummy;
-//  dummy.PushBack("Flower");
-//  dummy.PushBack("blah");
-//  std::vector<std::string>::iterator item;
-//  std::string userTitle;
-//  std::cout << "Enter title: ";
-//  std::cin >> userTitle;
-//  item = std::find(dummy.Begin(), dummy.End(), userTitle);
-//  if (item != dummy.Size())
-//  {
-//    std::cout << item - dummy.Begin() << " (counting from zero) \n";
-//  }
-//}
 
 void AllPlaylistsMenu(Vector<Playlist*>* playlists)
 {
@@ -97,16 +76,17 @@ void AllPlaylistsMenu(Vector<Playlist*>* playlists)
     std::cout << "No playlists available" << std::endl;
   }
   std::cout << "[0] Main Menu" << std::endl;
+  std::cout << "[1] Search Playlist" << std::endl;
 
   // Display the names of the playlists
-  for (size_t i = 1; i <= playlists->Size(); i++)
+  for (size_t i = 2; i <= playlists->Size() + 1; i++)
   {
-    std::string playlistName = "[" + std::to_string(i) + "] " + playlists->operator[](i - 1)->name;
+    std::string playlistName = "[" + std::to_string(i) + "] " + playlists->operator[](i - 2)->name;
     std::cout << playlistName << std::endl;
   }
 
-  std::cout << "[" + std::to_string(playlists->Size() + 1) + "] Create Playlist" << std::endl;
-  std::cout << "[" + std::to_string(playlists->Size() + 2) + "] Delete Playlist" << std::endl;
+  std::cout << "[" + std::to_string(playlists->Size() + 2) + "] Create Playlist" << std::endl;
+  std::cout << "[" + std::to_string(playlists->Size() + 3) + "] Delete Playlist" << std::endl;
   std::cout << "Enter option : ";
   std::cin >> option;
 
@@ -114,25 +94,49 @@ void AllPlaylistsMenu(Vector<Playlist*>* playlists)
   if (option == 0)
   {
     MainMenu();
+    return;
+  }
+
+  if (option == 1)
+  {
+    std::string playlistName;
+    std::cout << std::endl;
+    std::cout << "Enter Playlist Name : ";
+    std::cin >> playlistName;
+    Playlist* playlist = SearchPlaylist(playlists, playlistName);
+    if (playlist != NULL)
+    {
+      PlaylistMenu(playlist);
+      return;
+    }
+    else
+    {
+      std::cout << "Playlist not found" << std::endl;
+      AllPlaylistsMenu(playlists);
+      return;
+    }
   }
 
   // If user selects a playlist
   if (option <= playlists->Size())
   {
-    PlaylistMenu(playlists->operator[](option - 1));
+    PlaylistMenu(playlists->operator[](option - 2));
+    return;
   }
 
   // Create a new playlist
-  if (option == (playlists->Size() + 1))
+  if (option == (playlists->Size() + 2))
   {
     AddPlaylist();
     AllPlaylistsMenu(SongVariables::playlists);
+    return;
   }
 
   // Remove an existing playlist
-  if (option == (playlists->Size() + 2))
+  if (option == (playlists->Size() + 3))
   {
     RemovePlaylist();
+    return;
   }
 }
 
@@ -146,6 +150,7 @@ void RemovePlaylist()
   {
     std::cout << "No playlists available" << std::endl;
     AllPlaylistsMenu(playlists);
+    return;
   }
   std::cout << "Select a playlist to remove" << std::endl;
   std::cout << "===============================" << std::endl;
@@ -164,12 +169,14 @@ void RemovePlaylist()
   if (option == 0)
   {
     AllPlaylistsMenu(playlists);
+    return;
   }
   if (option <= playlists->Size())
   {
     std::cout << "Removing " << playlists->operator[](option - 1)->name << std::endl;
     playlists->RemoveAt(option - 1);
     AllPlaylistsMenu(playlists);
+    return;
   }
 }
 
@@ -214,6 +221,7 @@ void PlaylistMenu(Playlist* playlist)
   if (option == 0)
   {
     MainMenu();
+    return;
   }
   if (option == 1)
   {
@@ -223,10 +231,12 @@ void PlaylistMenu(Playlist* playlist)
   {
     std::cout << "Invaild option selected, please try again." << std::endl;
     PlaylistMenu(playlist);
+    return;
   }
   else
   {
     PlayingSongMenu(playlist->songs);
+    return;
   }
 }
 
@@ -237,13 +247,14 @@ void SongLibraryMenu(Vector<TreeNode*> directory)
   std::cout << "Song Library" << std::endl;
   std::cout << "==========================" << std::endl;
   std::cout << "[0] Main Menu" << std::endl;
+  std::cout << "[1] Search Song" << std::endl;
   // for every file in the /music folder
-  for (size_t i = 1; i <= directory.Size(); i++)
+  for (size_t i = 2; i <= directory.Size() + 1; i++)
   {
     std::string musicName = "[" + std::to_string(i) + "] ";
     // Get filename of current file and append it into musicName
-    musicName += directory[i - 1]->path.filename().u8string();
-    if (directory[i - 1]->isDirectory)
+    musicName += directory[i - 2]->path.filename().u8string();
+    if (directory[i - 2]->isDirectory)
     {
       musicName += " (Directory)";
     }
@@ -259,19 +270,74 @@ void SongLibraryMenu(Vector<TreeNode*> directory)
   {
     return;
   }
-  if (option < 0 || option > directory.Size())
+
+  if (option == 1)
+  {
+    std::string songName;
+    std::cout << std::endl;
+    std::cout << "Enter Song Name : ";
+    std::cin >> songName;
+    TreeNode* song = SearchSong(directory, songName);
+    if (song != NULL)
+    {
+      SongMenu(song);
+      return;
+    }
+    else
+    {
+      std::cout << "Song not found" << std::endl;
+      SongLibraryMenu(directory);
+      return;
+    }
+  }
+  if (option < 0 || option > directory.Size() + 1)
   {
     std::cout << "Invalid input, please try again";
     SongLibraryMenu(directory);
+    return;
   }
-  if (directory[option - 1]->isDirectory)
+  if (directory[option - 2]->isDirectory)
   {
-    SongLibraryMenu(directory[option - 1]->children);
+    SongLibraryMenu(directory[option - 2]->children);
+    return;
   }
   else
   {
-    SongMenu(directory[option - 1]);
+    SongMenu(directory[option - 2]);
+    return;
   }
+}
+
+TreeNode* SearchSong(Vector<TreeNode*> directory, std::string input)
+{
+  for (size_t i = 0; i < directory.Size(); i++)
+  {
+    if (directory[i]->isDirectory)
+    {
+      SearchSong(directory[i]->children, input);
+    }
+    else
+    {
+      if (NaiveSearch(input, directory[i]->path.filename().stem().u8string()))
+      {
+        return directory[i];
+      }
+    }
+  }
+
+  return NULL;
+}
+
+Playlist* SearchPlaylist(Vector<Playlist*>* playlists, std::string input)
+{
+  for (size_t i = 0; i < playlists->Size(); i++)
+  {
+    if (NaiveSearch(input, playlists->operator[](i)->name))
+    {
+      return playlists->operator[](i);
+    }
+  }
+  return NULL;
 }
 
 void SongMenu(TreeNode* musicFile)
@@ -297,28 +363,31 @@ void SongMenu(TreeNode* musicFile)
   {
     case 0:
       SongLibraryMenu(GetRootMusicDirectory());
-      break;
+      return;
     case 1:
       songQueue->AddEnd(musicPath);
       PlaySound(constTcharMusicPath, NULL,
                 SND_FILENAME | SND_ASYNC);  // To play the corresponding song
       PlayingSongMenu(songQueue);
-      break;
+      return;
     case 2:
       if (SongVariables::playlists->Size() <= 0)
       {
         std::cout << "No playlist found, please create a new playlist" << std::endl;
         AddPlaylist();
         SongMenu(musicFile);
+        return;
       }
       else
       {
         AddSongToPlaylist(musicFile);
+        return;
       }
       break;
     default:
       std::cout << "Invalid input, please try again." << std::endl;
       SongMenu(musicFile);
+      return;
   }
 }
 
@@ -387,6 +456,7 @@ void AddSongToPlaylist(TreeNode* musicFile)
   if (playlistOption == 0)
   {
     SongMenu(musicFile);
+    return;
   }
   if (playlistOption == 1)
   {
@@ -396,11 +466,13 @@ void AddSongToPlaylist(TreeNode* musicFile)
     std::cout << musicFile->path.filename().u8string() << " successfully added into "
               << playlists->operator[](playlistOption - 2)->name << std::endl;
     SongMenu(musicFile);
+    return;
   }
   else if (playlistOption < 0 || playlistOption > playlists->Size() + 1)
   {
     std::cout << "Invaild input, please try again." << std::endl;
     AddSongToPlaylist(musicFile);
+    return;
   }
   else
   {
@@ -409,6 +481,7 @@ void AddSongToPlaylist(TreeNode* musicFile)
     std::cout << musicFile->path.filename().u8string() << " successfully added into "
               << playlists->operator[](playlistOption - 2)->name << std::endl;
     SongMenu(musicFile);
+    return;
   }
 }
 
@@ -423,28 +496,53 @@ void PlayingSongMenu(DoublyLinkedList* songQueue)
 
   std::cout << "[0] Stop and Exit" << std::endl;
   std::cout << "[1] Replay" << std::endl;
-  std::cout << "[2] Next" << std::endl;
-  std::cout << "[3] Previous" << std::endl;
+  if (songQueue->GetLength() > 1)
+  {
+    std::cout << "[2] Next" << std::endl;
+    std::cout << "[3] Previous" << std::endl;
+  }
   std::cout << "Select Option:";
   std::cin >> option;
 
-  switch (option)
+  if (songQueue->GetLength() > 1)
   {
-    case 0:
-      // Stop playing song
-      PlaySound(NULL, 0, 0);
-      SongLibraryMenu(GetRootMusicDirectory());
-      break;  //
-    case 1:   //
+    if (option < 0 || option > 3)
     {
-      // Stop playing song
-      PlaySound(NULL, 0, 0);
-      PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
+      std::cout << "Invalid input, please try again" << std::endl;
       PlayingSongMenu(songQueue);
-      break;
+      return;
     }
-    case 2:
+  }
+  else
+  {
+    if (option < 0 || option > 1)
     {
+      std::cout << "Invalid input, please try again" << std::endl;
+      PlayingSongMenu(songQueue);
+      return;
+    }
+  }
+  if (option == 0)
+  {
+    // Stop playing song
+    PlaySound(NULL, 0, 0);
+    SongLibraryMenu(GetRootMusicDirectory());
+    return;
+  }
+  if (option == 1)
+  {
+    // Stop playing song
+    PlaySound(NULL, 0, 0);
+    // Replay song
+    PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
+    PlayingSongMenu(songQueue);
+    return;
+  }
+  if (songQueue->GetLength() > 1)
+  {
+    if (option == 2)
+    {
+      // Play next song in queue
       PlaySound(NULL, 0, 0);
       songQueue->Forward();
       std::string musicPath = songQueue->GetCurrent()->data.u8string();
@@ -452,9 +550,9 @@ void PlayingSongMenu(DoublyLinkedList* songQueue)
       const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
       PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
       PlayingSongMenu(songQueue);
-      break;
+      return;
     }
-    case 3:
+    if (option == 3)
     {
       PlaySound(NULL, 0, 0);
       songQueue->Backward();
@@ -463,7 +561,7 @@ void PlayingSongMenu(DoublyLinkedList* songQueue)
       const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
       PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);
       PlayingSongMenu(songQueue);
-      break;
+      return;
     }
   }
 }
