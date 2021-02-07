@@ -65,6 +65,18 @@ class Vector
     if (index < size) return arr[index];
   }
 
+  void RemoveAt(int index)
+  {
+    delete arr[index];
+
+    for (size_t i = index; i < size; i++)
+    {
+      arr[i + 1] = arr[i];
+    }
+
+    size--;
+  }
+
   void Pop()
   {
     delete arr[size];
