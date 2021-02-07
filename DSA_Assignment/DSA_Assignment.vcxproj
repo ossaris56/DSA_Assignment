@@ -161,6 +161,7 @@
     <ClInclude Include="DoublyLinkedList.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="NaiveSearch.h" />
     <ClInclude Include="Playlist.h" />
     <ClInclude Include="tree\DirectoryTree.h" />
     <ClInclude Include="tree\TreeNode.h" />
