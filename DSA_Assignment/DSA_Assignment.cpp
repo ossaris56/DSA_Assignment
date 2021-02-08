@@ -54,12 +54,12 @@ void MainMenu()
     switch (option)
     {
       case 0:
-        return; // End Program
+        return;  // End Program
       case 1:
-        SongLibraryMenu(rootMusicDirectory); // Leads to View Song Library Feature
+        SongLibraryMenu(rootMusicDirectory);  // Leads to View Song Library Feature
         return;
       case 2:
-        AllPlaylistsMenu(SongVariables::playlists); // Leads to View All Playlist Feature
+        AllPlaylistsMenu(SongVariables::playlists);  // Leads to View All Playlist Feature
         return;
       // Invalid options check
       default:
@@ -171,7 +171,6 @@ void RemovePlaylist()
   std::cout << "Enter Option : ";
   std::cin >> option;
 
-  // TODO :: add checks when < 0 and > playlists.size()
   if (option == 0)
   {
     AllPlaylistsMenu(playlists);
@@ -228,16 +227,16 @@ void PlaylistMenu(Playlist* playlist)
 
   if (option == 0)
   {
-    MainMenu(); // Leads to MainMenu feature
+    MainMenu();  // Leads to MainMenu feature
     return;
   }
   if (option == 1)
   {
-    RemoveSongFromPlaylist(playlist); // Leads to remove song from playlist feature
+    RemoveSongFromPlaylist(playlist);  // Leads to remove song from playlist feature
     return;
   }
   // Checks if invalid option has been entered
-  if (option < 0 || option > playlist->songs->GetLength())
+  if (option < 0 || option > playlist->songs->GetLength() + 1)
   {
     std::cout << "Invaild option selected, please try again." << std::endl;
     PlaylistMenu(playlist);
@@ -249,8 +248,8 @@ void PlaylistMenu(Playlist* playlist)
     std::string musicPath = playlist->songs->GetCurrent()->data.u8string();
     std::basic_string<TCHAR> tcharMusicPath(musicPath.begin(), musicPath.end());
     const TCHAR* constTcharMusicPath = tcharMusicPath.c_str();
-    PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC); //plays selected song
-    PlayingSongMenu(playlist->songs); // leads to playing song feature
+    PlaySound(constTcharMusicPath, 0, SND_FILENAME | SND_ASYNC);  // plays selected song
+    PlayingSongMenu(playlist->songs);                             // leads to playing song feature
     return;
   }
 }
@@ -414,9 +413,9 @@ void RemoveSongFromPlaylist(Playlist* playlist)
   std::cout << std::endl;
   std::cout << "Remove Song" << std::endl;
   std::cout << "==========================" << std::endl;
-  playlist->songs->Print();     // Displays all songs in playlist
-  //If no songs has been added into the playlist
-  if (playlist->songs->GetLength()-1 < 0)
+  playlist->songs->Print();  // Displays all songs in playlist
+  // If no songs has been added into the playlist
+  if (playlist->songs->GetLength() - 1 < 0)
   {
     std::cout << "No songs in this playlist to remove!" << std::endl;
   }
@@ -425,7 +424,8 @@ void RemoveSongFromPlaylist(Playlist* playlist)
   std::cin >> option;
   if (option == 0)
   {
-    PlaylistMenu(playlist); // Leads to the playlist menu
+    PlaylistMenu(playlist);  // Leads to the playlist menu
+    return;
   }
   // If invalid option has been entered
   if (option < 0 || option > playlist->songs->GetLength())
@@ -434,15 +434,16 @@ void RemoveSongFromPlaylist(Playlist* playlist)
     RemoveSongFromPlaylist(playlist);
     return;
   }
-  //Function to remove song from playlist
+  // Function to remove song from playlist
   else
   {
     std::cout << playlist->songs->Get(option - 1)->data.filename().u8string()
               << " has been removed from " << playlist->name << std::endl;
-    playlist->songs->DeleteItem(option-1);  // Remove song from playlist
+    playlist->songs->DeleteItem(option - 1);  // Remove song from playlist
     return;
   }
   PlaylistMenu(playlist);
+  return;
 }
 
 // The add song to playlist feature
@@ -453,12 +454,12 @@ void AddSongToPlaylist(TreeNode* musicFile)
   Vector<Playlist*>* playlists = SongVariables::playlists;
 
   // checks if there are any playlist availble
-  if (playlists->Size() == 0) // no playlist available
+  if (playlists->Size() == 0)  // no playlist available
   {
     std::cout << std::endl;
     std::cout << "No playlists available" << std::endl;
   }
-  else                        // existing playlists availble
+  else  // existing playlists availble
   {
     std::cout << "Playlists" << std::endl;
     std::cout << "==========================" << std::endl;
@@ -476,14 +477,15 @@ void AddSongToPlaylist(TreeNode* musicFile)
 
   if (playlistOption == 0)
   {
-    SongMenu(musicFile); // Leads to song menu feature
+    SongMenu(musicFile);  // Leads to song menu feature
     return;
   }
   if (playlistOption == 1)
   {
     std::cout << std::endl;
     fs::path musicFileString = musicFile->path.u8string();
-    playlists->operator[](playlistOption - 2)->songs->AddEnd(musicFileString); //add song into the end of the playlist
+    playlists->operator[](playlistOption - 2)
+        ->songs->AddEnd(musicFileString);  // add song into the end of the playlist
     std::cout << musicFile->path.filename().u8string() << " successfully added into "
               << playlists->operator[](playlistOption - 2)->name << std::endl;
     SongMenu(musicFile);
@@ -499,7 +501,8 @@ void AddSongToPlaylist(TreeNode* musicFile)
   else
   {
     std::string musicFileString = musicFile->path.u8string();
-    playlists->operator[](playlistOption - 2)->songs->AddEnd(musicFileString); //add song into the end of the playlist
+    playlists->operator[](playlistOption - 2)
+        ->songs->AddEnd(musicFileString);  // add song into the end of the playlist
     std::cout << musicFile->path.filename().u8string() << " successfully added into "
               << playlists->operator[](playlistOption - 2)->name << std::endl;
     SongMenu(musicFile);
@@ -524,13 +527,13 @@ void PlayingSongMenu(DoublyLinkedList* songQueue)
   // If there are more that 1 song in playlist
   if (songQueue->GetLength() > 1)
   {
-    std::cout << "[2] Next" << std::endl;       //Triggers the traverseFoward operation
-    std::cout << "[3] Previous" << std::endl;   //Triggers the traversBackward operation
+    std::cout << "[2] Next" << std::endl;      // Triggers the traverseFoward operation
+    std::cout << "[3] Previous" << std::endl;  // Triggers the traversBackward operation
   }
   std::cout << "Select Option:";
   std::cin >> option;
 
-  if (songQueue->GetLength() > 1) //Checks for invalid inputs for multiple songs in playlist
+  if (songQueue->GetLength() > 1)  // Checks for invalid inputs for multiple songs in playlist
   {
     if (option < 0 || option > 3)
     {
@@ -541,7 +544,7 @@ void PlayingSongMenu(DoublyLinkedList* songQueue)
   }
   else
   {
-    if (option < 0 || option > 1) //Checks for invalid inputs for only 1 song in playlist
+    if (option < 0 || option > 1)  // Checks for invalid inputs for only 1 song in playlist
     {
       std::cout << "Invalid input, please try again" << std::endl;
       PlayingSongMenu(songQueue);
