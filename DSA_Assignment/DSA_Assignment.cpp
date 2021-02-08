@@ -482,13 +482,8 @@ void AddSongToPlaylist(TreeNode* musicFile)
   }
   if (playlistOption == 1)
   {
-    std::cout << std::endl;
-    fs::path musicFileString = musicFile->path.u8string();
-    playlists->operator[](playlistOption - 2)
-        ->songs->AddEnd(musicFileString);  // add song into the end of the playlist
-    std::cout << musicFile->path.filename().u8string() << " successfully added into "
-              << playlists->operator[](playlistOption - 2)->name << std::endl;
-    SongMenu(musicFile);
+    AddPlaylist();
+    AddSongToPlaylist(musicFile);
     return;
   }
   // Checks if there are invalid inputs
